@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <div class="page-name" style="margin-top:80px;">
+        <a href="#" class="learn">
+            <span class="material-icons"> keyboard_return </span> Go back
+        </a>
+        <h1>Sign Up</h1>
+    </div>
+
+    <form action="" class="form" method="POST">
+        {% csrf_token %}
+        <center>
+            <div class="logo f-logo">
+                <i class="fa-brands fa-blogger"></i>
+            </div>
+            <div class="inputs">
+                <div class="search-bar s-active input">
+                    <input type="text" name="first_name" placeholder="First name" required />
+                    <div class="animated-search">
+                        <i class="uil uil-user"></i>
+                    </div>
+                </div>
+                <div class="search-bar s-active input">
+                    <input type="text" name="last_name" placeholder="Last name" required />
+                    <div class="animated-search">
+                        <i class="uil uil-user"></i>
+                    </div>
+                </div>
+                <div class="search-bar s-active input">
+                    <input type="text" name="username" placeholder="User name" required />
+                    <div class="animated-search">
+                        <i class="uil uil-user"></i>
+                    </div>
+                </div>
+
+                <div class="search-bar s-active input">
+                    <input type="email" name="email" placeholder="Email" required/>
+                    <div class="animated-search">
+                        <i class="uil uil-envelope-alt"></i>
+                    </div>
+                </div>
+
+                <div class="search-bar s-active input">
+                    <input type="tpassword" name="password" placeholder="Create password" required/>
+                    <div class="animated-search">
+                        <i class="uil uil-key-skeleton"></i>
+                    </div>
+                </div>
+                <div class="search-bar s-active input">
+                    <input type="tpassword" name="confirm_password" placeholder="Confirm password" required/>
+                    <div class="animated-search">
+                        <i class="uil uil-key-skeleton"></i>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-danger rounded mybtn mt-5" style="font-size: 12px">
+                    SIGN UP &nbsp;<i class="fa-solid fa-arrow-right" style="color:white;"></i>
+                </button>
+                <center>
+                    <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
+                </center>
+            </div>
+        </center>
+    </form>
+</div>
+
+{% endblock content %}

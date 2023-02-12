@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% include 'include/css/cover-css.html' %}
+<body style="margin-top:100px">
+    {% include 'include/cover.html' %}
+    <div class="container mt-5 mb-5">
+        <hr class="mb-5">
+        <div class="row">
+            {% include 'include/sidebar.html' %}
+            <div class="col-9">
+                <div class="card">
+                    {% block dcontent %}
+                    
+                    {% endblock dcontent %}
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+{% endblock content %}

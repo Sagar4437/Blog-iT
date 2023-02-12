@@ -1,0 +1,15 @@
+  <script>
+    function myFunction() {
+      const targetDiv = document.getElementById("notification");
+      targetDiv.style.display = "none";
+      console.log("Working")
+    }
+  </script>
+  {% if messages %}
+  {% for message in messages %}
+  <div id="notification" style="position: fixed; bottom: 20px; right: 20px; background-color:#f2f0f1; border: 2px solid red; padding: 10px; border-radius: 10px; z-index:1000">
+    <span style="font-size:12px; ">{{message}}</span> &nbsp; 
+    <button class="close-btn" style="background-color:#f2f0f1; position: relative; bottom:10px; opacity:0.5;" onclick="myFunction()"> <a href="#">x</a></button>
+  </div>
+  {% endfor %}
+  {% endif %}
