@@ -10,7 +10,11 @@ def home(request):
     return render(request, 'app/home.html')
 
 def dashboard(request):
-    return render(request,'app/dashboard.html')
+    blogs = Blog.objects.filter(created_by=request.user)
+    context = {
+        'blogs':blogs,
+    }
+    return render(request,'app/dashboard.html',context)
 
 def create_blog(request):
     form = CreateBlogForm()
@@ -33,7 +37,11 @@ def create_blog(request):
     return render(request,'app/create_blog.html',{'form':form})
 
 def statistics(request):
-    return render(request,'app/statistics.html')
+    blogs = Blog.objects.filter(created_by=request.user)
+    context = {
+        'blogs':blogs,
+    }
+    return render(request,'app/statistics.html',context)
 
 def edit_blog(request,slug):
     try:
@@ -59,3 +67,26 @@ def edit_blog(request,slug):
         'image_name': str(blog.image).split('/')[-1]
     }
     return render(request,'app/create_blog.html',context)
+
+def delete_blog(request,slug):
+    try:
+        Blog.objects.get(slug=slug,created_by=request.user).delete()
+        messages.success(request, 'Blog has been deleted successfully')
+        return redirect('statistics')
+    except:
+        messages.error(request,'No Blog Found!')
+        return redirect('dashboard')
+
+def make_featured(request,slug):
+    try:
+        blog = Blog.objects.get(slug=slug, created_by=request.user)
+        if blog.is_featured:
+            blog.is_featured =False
+            messages.success(request, f'Blog "{blog.title}" is marked as Un-Featured.')
+        else:
+            blog.is_featured = True
+            messages.success(request, f'Blog "{blog.title}" is marked as Featured.')
+        blog.save()
+    except:
+        messages.error(request,'Invalid Blog! Can not marked as featured.')
+    return redirect('statistics')

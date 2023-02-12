@@ -10,6 +10,8 @@ urlpatterns = [
     # CRUD BLOG
     path('create-blog/',views.create_blog, name="create_blog"),
     path('edit-blog/<str:slug>/',views.edit_blog, name="edit_blog"),
+    path('delete-blog/<str:slug>/',views.delete_blog, name="delete_blog"),
+    path('make-featured/<str:slug>/',views.make_featured, name="make_featured"),
     path('blog-statistics',views.statistics, name="statistics"),
 
 ]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

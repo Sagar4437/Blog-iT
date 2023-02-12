@@ -2,80 +2,50 @@
 {% block dcontent %}
 <div class="card">
     <div class="card-body">
-        <div class="row">
-            <div class="col-12">
-                <table class="table table-hover mt-5 mb-3" id='myOrdersTable'>
-                    <thead style="background-color:#DC3545;border-radius:.10px">
-                        <tr>
-                            <th style="font-size:16px;color:white"></th>
-                            <th style="font-size:16px;color:white">Blog</th>
-                            <th style="font-size:16px;color:white">View</th>
-                            <th style="font-size:16px;color:white">Like</th>
-                            <th style="font-size:16px;color:white">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="font-size:14px">2.</td>
-                            <td style="font-size:14px">Lorem Ipsum is simply dummy text of the.</td>
-                            <td style="font-size:14px">110k</td>
-                            <td style="font-size:14px">155</td>
-                            <td style="font-size:14px"><i class="fa-solid fa-pen-to-square"></i>&emsp;<i
-                                    class="fa-solid fa-trash"></i>&emsp;<i class="fa-solid fa-star text-warning"></i>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="font-size:14px">2.</td>
-                            <td style="font-size:14px">Saurabh Khule</td>
-                            <td style="font-size:14px">110k</td>
-                            <td style="font-size:14px">155</td>
-                            <td style="font-size:14px"><i class="fa-solid fa-pen-to-square"></i>&emsp;<i
-                                    class="fa-solid fa-trash"></i>&emsp;<i class="fa-solid fa-star"></i></td>
-                        </tr>
-                        <tr>
-                            <td style="font-size:14px">2.</td>
-                            <td style="font-size:14px">Saurabh Khule</td>
-                            <td style="font-size:14px">110k</td>
-                            <td style="font-size:14px">155</td>
-                            <td style="font-size:14px"><i class="fa-solid fa-pen-to-square"></i>&emsp;<i
-                                    class="fa-solid fa-trash"></i>&emsp;<i class="fa-solid fa-star"></i></td>
-                        </tr>
-                        <tr>
-                            <td style="font-size:14px">3.</td>
-                            <td style="font-size:14px">Sagar Darade</td>
-                            <td style="font-size:14px">27k</td>
-                            <td style="font-size:14px">15</td>
-                            <td style="font-size:14px"><i class="fa-solid fa-pen-to-square"></i>&emsp;<i
-                                    class="fa-solid fa-trash"></i>&emsp;<i class="fa-solid fa-star"></i></td>
-                        </tr>
-                        <tr>
-                            <td style="font-size:14px">4.</td>
-                            <td style="font-size:14px">Pratik Khule</td>
-                            <td style="font-size:14px">410k</td>
-                            <td style="font-size:14px">1875</td>
-                            <td style="font-size:14px"><i class="fa-solid fa-pen-to-square"></i>&emsp;<i
-                                    class="fa-solid fa-trash"></i>&emsp;<i class="fa-solid fa-star"></i></td>
-                        </tr>
-                        <tr>
-                            <td style="font-size:14px">5.</td>
-                            <td style="font-size:14px">Pratik Deshmukh</td>
-                            <td style="font-size:14px">210k</td>
-                            <td style="font-size:14px">15</td>
-                            <td style="font-size:14px"><i class="fa-solid fa-pen-to-square"></i>&emsp;<i
-                                    class="fa-solid fa-trash"></i>&emsp;<i class="fa-solid fa-star"></i></td>
-                        </tr>
-                        <tr>
-                            <td style="font-size:14px">6.</td>
-                            <td style="font-size:14px">chetan Karpe</td>
-                            <td style="font-size:14px">20k</td>
-                            <td style="font-size:14px">18k</td>
-                            <td style="font-size:14px"><i class="fa-solid fa-pen-to-square"></i>&emsp;<i
-                                    class="fa-solid fa-trash"></i>&emsp;<i class="fa-solid fa-star"></i></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+        <div class="container" style="padding:30px;">
+            <table class="table table-hover mt-5 mb-3 pt-3" id='myOrdersTable'>
+                <thead style="background-color:#DC3545;">
+                    <tr>
+                        <th style="font-size:16px;color:white">Blog</th>
+                        <th style="font-size:16px;color:white">View</th>
+                        <th style="font-size:16px;color:white">Like</th>
+                        <th style="font-size:16px;color:white">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for blog in blogs %}
+                    <tr>
+                        <td style="font-size:14px">{{blog.title | truncatechars:100}}</td>
+                        <td style="font-size:14px">{{blog.views}}</td>
+                        <td style="font-size:14px">{{blog.likes}}</td>
+                        <td style="font-size:14px">
+                            <a href="{% url 'edit_blog' blog.slug %}"><i class="fa-solid fa-pen-to-square text-success" ></i>&emsp;</a>
+                            <a href="#" id="delet-url"><i class="fa-solid fa-trash text-danger" onclick=" warningBox('{% url 'delete_blog' blog.slug %}')"></i>&emsp;</a>
+                            <a href="{% url 'make_featured' blog.slug %}"> <i class="fa-solid fa-star {% if blog.is_featured %}text-warning{% endif %}"></i></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>  
         </div>
     </div>
+
+    <script>
+        function warningBox(url){
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+              }).then((result) => {
+                if (result.isConfirmed) {
+                    window.open(url,'_self')                  
+                }
+              })
+        }
+    </script>
 
     {% endblock dcontent %}
