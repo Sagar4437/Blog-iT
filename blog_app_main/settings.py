@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'app',
     'account',
     'ckeditor',
+    'taggit'
 ]
 
 MIDDLEWARE = [
@@ -144,3 +145,5 @@ CKEDITOR_CONFIGS = {
         'width': 'full', 
     },
 }
+
+TAGGIT_CASE_INSENSITIVE = True

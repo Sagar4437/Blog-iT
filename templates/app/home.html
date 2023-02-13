@@ -32,23 +32,19 @@
   <div class="container">
     <div class="grid-2">
       <div class="post-img">
-        <img src="{% static 'images/post.png' %}" alt="" />
+        <img src="{{featured_blog.image.url}}" alt="" />
       </div>
       <div class="post-content">
         <div class="cetagory">
           <p style="margin-bottom: 0rem">Category name</p>
         </div>
         <h1>
-          Lorem ipsum began as scrambled, nonsensical Latin derived from
-          Cicero's 1st-century BC text.
+          {{featured_blog.title}}
         </h1>
         <p class="des">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iure
-          ullam animi repellat non ut delectus culpa! Iste quia corporis
-          illum doloribus facilis quo totam eveniet sapiente odit
-          cupiditate? Cumque, nam?
+          {{featured_blog.short_description}}
         </p>
-        <a class="learn" href="#">Learn more <span class="material-icons"> trending_flat </span></a>
+        <a class="learn" href="{% url 'view_blog' featured_blog.slug %}">Read more <span class="material-icons"> trending_flat </span></a>
       </div>
     </div>
   </div>
@@ -57,81 +53,38 @@
   <div class="container">
     <h1 class="sec-title">Top blogs</h1>
     <div class="grid-3">
+      {% for blog in top_blogs %}
       <!-- card -->
-      <a href="#">
+      <a href="{% url 'view_blog' blog.slug %}">
         <div class="card my-card">
           <div class="post-img">
-            <img src="{% static 'images/post.png' %}" alt="" />
+            <img src="{{blog.image.url}}" alt="" />
             <div class="tag">Tag name</div>
+          </div>
+          <div class="track text-center">
+            <i class="uil uil-users-alt ml-5"></i>
+            <p class="view-count mt-3">{{blog.views}}+ views</p>
+            <i class="uil uil-heart ml-4"></i> <span>{{blog.likes}}</span>
+            <i class="uil uil-comment-alt ml-4"></i><span>10</span>
           </div>
           <div class="card-content">
             <h3>
-              A blog title and other stuffs will add here, also we can
-              include.
+              {{blog.title | truncatechars:35}}
             </h3>
             <div class="author">
               <div class="profile-pic">
                 <img src="{% static 'images/author.svg' %}" alt="" />
               </div>
               <div class="details">
-                <p>Author name</p>
-                <small>June 20, 2022</small>
+                <p>{{blog.created_by.username | title}}</p>
+                <small>{{blog.created_at}}</small>
               </div>
             </div>
           </div>
         </div>
       </a>
       <!-- card end-->
-      <!-- card -->
-      <a href="#">
-        <div class="card my-card">
-          <div class="post-img">
-            <img src="{% static 'images/post.png' %}" alt="" />
-            <div class="tag">Tag name</div>
-          </div>
-          <div class="card-content">
-            <h3>
-              A blog title and other stuffs will add here, also we can
-              include.
-            </h3>
-            <div class="author">
-              <div class="profile-pic">
-                <img src="{% static 'images/author.svg' %}" alt="" />
-              </div>
-              <div class="details">
-                <p>Author name</p>
-                <small>June 20, 2022</small>
-              </div>
-            </div>
-          </div>
-        </div>
-      </a>
-      <!-- card end-->
-      <!-- card -->
-      <a href="#">
-        <div class="card my-card">
-          <div class="post-img">
-            <img src="{% static 'images/post.png' %}" alt="" />
-            <div class="tag">Tag name</div>
-          </div>
-          <div class="card-content">
-            <h3>
-              A blog title and other stuffs will add here, also we can
-              include.
-            </h3>
-            <div class="author">
-              <div class="profile-pic">
-                <img src="{% static 'images/author.svg' %}" alt="" />
-              </div>
-              <div class="details">
-                <p>Author name</p>
-                <small>June 20, 2022</small>
-              </div>
-            </div>
-          </div>
-        </div>
-      </a>
-      <!-- card end-->
+      {% endfor %}
     </div>
     <center>
       <button href="#" class="btn btn-danger rounded mybtn mt-5" style="font-size: 12px">
@@ -144,81 +97,38 @@
   <div class="container">
     <h1 class="sec-title">New blogs</h1>
     <div class="grid-3">
-      <!-- card -->
-      <a href="#">
-        <div class="card my-card">
-          <div class="post-img">
-            <img src="{% static 'images/post.png' %}" alt="" />
-            <div class="tag">Tag name</div>
-          </div>
-          <div class="card-content">
-            <h3>
-              A blog title and other stuffs will add here, also we can
-              include.
-            </h3>
-            <div class="author">
-              <div class="profile-pic">
-                <img src="{% static 'images/author.svg' %}" alt="" />
-              </div>
-              <div class="details">
-                <p>Author name</p>
-                <small>June 20, 2022</small>
-              </div>
+      {% for blog in new_blogs %}
+     <!-- card -->
+     <a href="{% url 'view_blog' blog.slug %}">
+      <div class="card my-card">
+        <div class="post-img">
+          <img src="{{blog.image.url}}" alt="" />
+          <div class="tag">Tag name</div>
+        </div>
+        <div class="track text-center">
+          <i class="uil uil-users-alt ml-5"></i>
+          <p class="view-count mt-3">{{blog.views}}+ views</p>
+          <i class="uil uil-heart ml-4"></i> <span>{{blog.likes}}</span>
+          <i class="uil uil-comment-alt ml-4"></i><span>10</span>
+        </div>
+        <div class="card-content">
+          <h3>
+            {{blog.title | truncatechars:35}}
+          </h3>
+          <div class="author">
+            <div class="profile-pic">
+              <img src="{% static 'images/author.svg' %}" alt="" />
+            </div>
+            <div class="details">
+              <p>{{blog.created_by.username | title}}</p>
+              <small>{{blog.created_at}}</small>
             </div>
           </div>
         </div>
-      </a>
-      <!-- card end-->
-      <!-- card -->
-      <a href="#">
-        <div class="card my-card">
-          <div class="post-img">
-            <img src="{% static 'images/post.png' %}" alt="" />
-            <div class="tag">Tag name</div>
-          </div>
-          <div class="card-content">
-            <h3>
-              A blog title and other stuffs will add here, also we can
-              include.
-            </h3>
-            <div class="author">
-              <div class="profile-pic">
-                <img src="{% static 'images/author.svg' %}" alt="" />
-              </div>
-              <div class="details">
-                <p>Author name</p>
-                <small>June 20, 2022</small>
-              </div>
-            </div>
-          </div>
-        </div>
-      </a>
-      <!-- card end-->
-      <!-- card -->
-      <a href="#">
-        <div class="card my-card">
-          <div class="post-img">
-            <img src="{% static 'images/post.png' %}" alt="" />
-            <div class="tag">Tag name</div>
-          </div>
-          <div class="card-content">
-            <h3>
-              A blog title and other stuffs will add here, also we can
-              include.
-            </h3>
-            <div class="author">
-              <div class="profile-pic">
-                <img src="{% static 'images/author.svg' %}" alt="" />
-              </div>
-              <div class="details">
-                <p>Author name</p>
-                <small>June 20, 2022</small>
-              </div>
-            </div>
-          </div>
-        </div>
-      </a>
-      <!-- card end-->
+      </div>
+     </a>
+     <!-- card end-->
+    {% endfor %}
     </div>
     <center>
       <button href="#" class="btn btn-danger rounded mybtn mt-5" style="font-size: 12px">

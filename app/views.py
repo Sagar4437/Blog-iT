@@ -7,10 +7,18 @@ from .models import Blog
 
 # Create your views here.
 def home(request):
-    return render(request, 'app/home.html')
+    featured_blog = Blog.objects.filter(is_featured=True).order_by('-views','-likes')[:1]
+    top_blogs = Blog.objects.all().order_by('-views','-likes')[:3]
+    new_blogs = Blog.objects.all().order_by('-created_at','-views')[:3]
+    context = {
+        'featured_blog':featured_blog[0],
+        'top_blogs':top_blogs,
+        'new_blogs':new_blogs,
+    }
+    return render(request, 'app/home.html',context)
 
 def dashboard(request):
-    blogs = Blog.objects.filter(created_by=request.user)
+    blogs = Blog.objects.filter(created_by=request.user).order_by('-created_at')
     context = {
         'blogs':blogs,
     }
@@ -37,7 +45,7 @@ def create_blog(request):
     return render(request,'app/create_blog.html',{'form':form})
 
 def statistics(request):
-    blogs = Blog.objects.filter(created_by=request.user)
+    blogs = Blog.objects.filter(created_by=request.user).order_by('-created_at')
     context = {
         'blogs':blogs,
     }
@@ -103,7 +111,7 @@ def view_blog(request,slug):
     blog.save()
     recent_blogs = Blog.objects.filter(created_by=blog.created_by).order_by('-created_at')[:3]
     related_blogs = Blog.objects.filter(created_by=blog.created_by).order_by('-created_at')[:3]
-    top_blogs = Blog.objects.filter(created_by=blog.created_by).order_by('-created_at')[:3]
+    top_blogs = Blog.objects.filter(created_by=blog.created_by).order_by('-views','-likes')[:3]
     context={
         'blog':blog,
         'recent_blogs':recent_blogs,
