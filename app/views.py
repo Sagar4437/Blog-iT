@@ -3,7 +3,7 @@ from .forms import CreateBlogForm
 from django.template.defaultfilters import slugify
 from django.contrib import messages
 from .models import Blog
-
+from taggit.models import Tag
 
 # Create your views here.
 def home(request):
@@ -29,12 +29,11 @@ def create_blog(request):
     if request.method=="POST":
         form = CreateBlogForm(request.POST,request.FILES)
         if form.is_valid():
-            title = form.cleaned_data['title']
-            short_description = form.cleaned_data['short_description']
-            long_description = form.cleaned_data['long_description']
-            slug = 'temp'
-            image = form.cleaned_data['image']
-            blog = Blog.objects.create(title=title,short_description=short_description,long_description=long_description,created_by = request.user,slug=slug,image=image)
+            blog = form.save(commit=False)
+            blog.slug = 'temp'
+            blog.created_by = request.user
+            blog.save()
+            form.save_m2m()
             blog.slug = slugify(blog.title+"-"+str(blog.id))
             blog.save()
             messages.success(request,'Blog has been created successfully')
@@ -54,24 +53,23 @@ def statistics(request):
 def edit_blog(request,slug):
     try:
         blog = Blog.objects.get(slug=slug,created_by=request.user)
+        tag_names = ','.join([tag.name for tag in blog.tags.all()])
     except:
         messages.error(request,'No Blog Found!')
         return redirect('dashboard')
     if request.method=="POST":
-        form = CreateBlogForm(request.POST,request.FILES)
+        form = CreateBlogForm(request.POST,request.FILES,instance=blog)
         if form.is_valid():
-            blog.title = form.cleaned_data['title']
-            blog.short_description = form.cleaned_data['short_description']
-            blog.long_description = form.cleaned_data['long_description']
-            blog.image = form.cleaned_data['image']
-            blog.is_featured = form.cleaned_data['is_featured']
+            blog = form.save(commit=False)
+            blog.slug = slugify(blog.title+"-"+str(blog.id))
             blog.save()
+            form.save_m2m()
             messages.success(request,'Blog has been Updated successfully')
             return redirect('dashboard')
         else:
             messages.error(request,'Please fill all details properly.')
     context = {
-        'form' : CreateBlogForm(instance=blog),
+        'form' : CreateBlogForm(instance=blog, initial={'tags': tag_names}),
         'image_name': str(blog.image).split('/')[-1]
     }
     return render(request,'app/create_blog.html',context)
