@@ -6,6 +6,7 @@ from .models import Blog
 from taggit.models import Tag
 from django.db.models import Count
 
+
 # Create your views here.
 def home(request):
     featured_blog = Blog.objects.filter(is_featured=True).order_by('-views','-likes')[:1]
