@@ -4,12 +4,19 @@ from django.template.defaultfilters import slugify
 from django.contrib import messages
 from .models import Blog
 from taggit.models import Tag
+from django.db.models import Count
 
 # Create your views here.
 def home(request):
     featured_blog = Blog.objects.filter(is_featured=True).order_by('-views','-likes')[:1]
     top_blogs = Blog.objects.all().order_by('-views','-likes')[:3]
     new_blogs = Blog.objects.all().order_by('-created_at','-views')[:3]
+
+    # Get a queryset of all tags that are not used in any Blog instances
+    unused_tags = Tag.objects.filter(blog__isnull=True)
+    # Delete the unused tags from the database
+    unused_tags.delete()
+
     context = {
         'featured_blog':featured_blog[0],
         'top_blogs':top_blogs,
@@ -110,10 +117,12 @@ def view_blog(request,slug):
     recent_blogs = Blog.objects.filter(created_by=blog.created_by).order_by('-created_at')[:3]
     related_blogs = Blog.objects.filter(created_by=blog.created_by).order_by('-created_at')[:3]
     top_blogs = Blog.objects.filter(created_by=blog.created_by).order_by('-views','-likes')[:3]
+    top_tags = Tag.objects.annotate(num_times_used=Count('taggit_taggeditem_items')).order_by('-num_times_used')[:10]
     context={
         'blog':blog,
         'recent_blogs':recent_blogs,
         'related_blogs':related_blogs,
         'top_blogs':top_blogs,
+        'top_tags':top_tags,
     }
     return render(request, 'app/blogdetails.html',context)

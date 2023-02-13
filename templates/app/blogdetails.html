@@ -52,9 +52,9 @@
                                 </div><br> <br>
                                 {{blog.long_description |safe}}
                                 <div class="blog-tags">
-                                    <div class="tag">Tag content</div>
-                                    <div class="tag">Tag content</div>
-                                    <div class="tag">Tag content</div>  
+                                    {% for tag in blog.tags.all %}
+                                    <div class="tag">{{tag}}</div>
+                                    {% endfor %}
                                 </div>
                                 <div class="social-share">
                                     <div class="reactions">
@@ -171,7 +171,8 @@
                         <div class="card">
                             <div class="post-img">
                                 <img src="{{blog.image.url}}" alt="" />
-                                <div class="tag">Tag name</div>
+                                <div class="tag">Category</div>
+                                
                             </div>
                             <div class="card-content">
                                 <h3>
@@ -209,10 +210,9 @@
                 <div class="block">
                     <h2 class="title2">Top Tags</h2>
                     <div class="blog-tags">
-                        <div class="tag">Tag</div>
-                        <div class="tag">Tag content</div>
-                        <div class="tag">Tag</div>
-                        <div class="tag">Tag content</div>
+                        {% for tag in top_tags %}
+                            <div class="tag">{{tag}}</div>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
