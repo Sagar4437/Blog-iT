@@ -15,7 +15,7 @@
                 <tbody>
                     {% for blog in blogs %}
                     <tr>
-                        <td style="font-size:14px">{{blog.title | truncatechars:100}}</td>
+                        <td style="font-size:14px"><a href="{% url 'view_blog' blog.slug %}">{{blog.title | truncatechars:100}}</a></td>
                         <td style="font-size:14px">{{blog.views}}</td>
                         <td style="font-size:14px">{{blog.likes}}</td>
                         <td style="font-size:14px">

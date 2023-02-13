@@ -90,3 +90,24 @@ def make_featured(request,slug):
     except:
         messages.error(request,'Invalid Blog! Can not marked as featured.')
     return redirect('statistics')
+
+def like_blog(request,slug):
+    blog = get_object_or_404(Blog,slug=slug, created_by=request.user)
+    blog.likes += 1
+    blog.save()
+    return redirect('view_blog',slug)
+
+def view_blog(request,slug):
+    blog = get_object_or_404(Blog,slug=slug, created_by=request.user)
+    blog.views += 1
+    blog.save()
+    recent_blogs = Blog.objects.filter(created_by=blog.created_by).order_by('-created_at')[:3]
+    related_blogs = Blog.objects.filter(created_by=blog.created_by).order_by('-created_at')[:3]
+    top_blogs = Blog.objects.filter(created_by=blog.created_by).order_by('-created_at')[:3]
+    context={
+        'blog':blog,
+        'recent_blogs':recent_blogs,
+        'related_blogs':related_blogs,
+        'top_blogs':top_blogs,
+    }
+    return render(request, 'app/blogdetails.html',context)

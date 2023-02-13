@@ -43,13 +43,13 @@
                     <tbody>
                         {% for blog in blogs %}
                         <tr>
-                            <td style="font-size:14px">{{blog.title | truncatechars:100}}</td>
+                            <td style="font-size:14px"><a href="{% url 'view_blog' blog.slug %}">{{blog.title | truncatechars:100}}</a></td>
                             <td style="font-size:14px">{{blog.views}}</td>
                             <td style="font-size:14px">{{blog.likes}}</td>
                             <td style="font-size:14px">
                                 <a href="{% url 'edit_blog' blog.slug %}"><i class="fa-solid fa-pen-to-square text-success" ></i>&emsp;</a>
                                 <a href="#" id="delet-url"><i class="fa-solid fa-trash text-danger" onclick=" warningBox('{% url 'delete_blog' blog.slug %}')"></i>&emsp;</a>
-                                <i class="fa-solid fa-star {% if blog.is_featured %}text-warning{% endif %}"></i>
+                                <a href="{% url 'make_featured' blog.slug%}"><i class="fa-solid fa-star {% if blog.is_featured %}text-warning{% endif %}"></i></a>
                             </td>
                         </tr>
                         {% endfor %}
