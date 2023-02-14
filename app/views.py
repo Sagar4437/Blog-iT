@@ -127,3 +127,11 @@ def view_blog(request,slug):
         'top_tags':top_tags,
     }
     return render(request, 'app/blogdetails.html',context)
+
+
+def about(request):
+    return render(request,'app/about.html')
+
+def all_blogs(request):
+    # return render(request,'include/filter.html')
+    return render(request,'app/allblogs.html')

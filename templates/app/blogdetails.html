@@ -16,7 +16,7 @@
 
                 <center>
                     <div class="typo">
-                        <h1 class="title blog-title" style="font-size:45px">
+                        <h1 class="title blog-title" style="">
                             {{blog.title}}
                         </h1>
                         <div class="timeline">
@@ -28,13 +28,10 @@
                                 <i class="uil uil-users-alt"></i>
                                 <p class="view-count">{{blog.views}}+ views</p>
                             </div>
+                            <button class="btn btn-info">
+                                <i class="uil uil-bookmark-full"></i>
+                            </button>
                             <div class="track">
-                                <form action="" method="POST">
-                                    <button type="submit" class="btn btn-info">
-                                        <i class="uil uil-bookmark-full"></i>
-                                        <p class="bookmark">Bookmark</p>
-                                    </button>
-                                </form>
                             </div>
                         </div>
                     </div>
@@ -59,11 +56,11 @@
                                 <div class="social-share">
                                     <div class="reactions">
                                         <div class="likes">
-                                            <a href="{% url 'like_blog' blog.slug %}"><i class="uil uil-heart"></i> <span>{{blog.likes}}</span></a>
+                                            <a href="{% url 'like_blog' blog.slug %}"><i class="uil uil-heart"></i> <span style="font-size:20px">{{blog.likes}}</span></a>
                                         </div>
                                         <div class="total-comments">
                                             <i class="uil uil-comment-alt"></i>
-                                            <span>10</span>
+                                            <span style="font-size:20px">10</span>
                                         </div>
                                     </div>
                                     <div class="share">
@@ -155,9 +152,9 @@
                         </div>
                         <div class="recent-content">
                             <h3>
-                                {{blog.title}}
+                                {{blog.title | truncatechars:50}}
                             </h3>
-                            <a class="learn" href="{% url 'view_blog' blog.slug %}">Learn more<span class="material-icons"> trending_flat </span> </a>
+                            <a class="learn" href="{% url 'view_blog' blog.slug %}">Read more<span class="material-icons"> trending_flat </span> </a>
                         </div>
                     </div>
                     {% endfor %}

@@ -18,4 +18,10 @@ urlpatterns = [
 
     path('blog-statistics',views.statistics, name="statistics"),
 
+    # other pages
+    path('about-us',views.about, name="about"),
+    path('blogs/all/',views.all_blogs, name="all_blogs"),
+
+
+
 ]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
