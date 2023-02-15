@@ -214,7 +214,7 @@ header .container {
 }
 
 /* newsletter */
-.newsletter form {
+.newsletter my-form {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -802,7 +802,7 @@ p span {
   padding: 0;
 }
 
-.form {
+.my-form {
   width: 40%;
   padding: 5rem;
   border-radius: 1rem;
@@ -811,25 +811,25 @@ p span {
   margin-top: 10rem;
 }
 
-.form .input {
+.my-form .input {
   margin-top: 1.5rem;
   width: 100%;
 }
 
-.form .animated-search {
+.my-form .animated-search {
   left: -1px;
 }
 
-.form input {
+.my-form input {
   padding-right: 0;
   padding-left: 4rem;
 }
 
-.form .s-active {
+.my-form .s-active {
   padding: 0 2rem;
 }
 
-.form .s-active input {
+.my-form .s-active input {
   width: 100%;
 }
 
@@ -837,12 +837,12 @@ p span {
   margin-top: 5rem;
 }
 
-.form .btn1 {
+.my-form .btn1 {
   margin-top: 3rem;
   width: 100%;
 }
 
-.form p {
+.my-form p {
   margin-top: 2rem;
 }
 
@@ -909,7 +909,7 @@ p a {
   width: 100%;
 }
 
-.reply-box form {
+.reply-box my-form {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1023,7 +1023,7 @@ main {
     width: 100%;
   }
 
-  .form {
+  .my-form {
     width: 100%;
     margin-top: 5rem;
     padding: 5rem 2rem;

@@ -3,8 +3,9 @@ from .forms import CreateBlogForm
 from django.template.defaultfilters import slugify
 from django.contrib import messages
 from .models import Blog
-from taggit.models import Tag
+from taggit.models import Tag, TaggedItem
 from django.db.models import Count
+from django.db.models import Q
 
 
 # Create your views here.
@@ -133,5 +134,29 @@ def about(request):
     return render(request,'app/about.html')
 
 def all_blogs(request):
-    # return render(request,'include/filter.html')
-    return render(request,'app/allblogs.html')
+    blog = Blog.objects.all()
+    if request.POST:
+        blog_name = request.POST.get('blog_name')
+        author = request.POST.get('author')
+        category = request.POST.get('category')
+        tags = request.POST.get('tags')
+        sort_by = request.POST.get('sort_by')
+        sort_dir = request.POST.get('sort_dir')
+        sort = sort_dir + sort_by.lower()
+        # blog = Blog.objects.filter(created_by__username__icontains=author,title__icontains=blog_name,tags__name__in=tags).order_by(sort)
+        blog = blog.order_by(sort)
+        if blog_name != '':
+            blog = blog.filter(Q(title__icontains=blog_name) | Q(long_description__icontains=blog_name) | Q(short_description__icontains=blog_name) )
+        if author != '':
+            blog = blog.filter(created_by__username__icontains=author)
+        if category != 'all':
+            # blog = blog.filter(#something)
+            pass
+        print(blog)
+        
+    
+    context = {
+        'blogs':blog[:6],
+    }
+
+    return render(request,'app/allblogs.html',context)
