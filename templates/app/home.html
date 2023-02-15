@@ -36,7 +36,7 @@
       </div>
       <div class="post-content">
         <div class="cetagory">
-          <p style="margin-bottom: 0rem">Category name</p>
+          <p style="margin-bottom: 0rem">{{featured_blog.category}}</p>
         </div>
         <h1>
           {{featured_blog.title}}
@@ -59,7 +59,7 @@
         <div class="card my-card">
           <div class="post-img">
             <img src="{{blog.image.url}}" alt="" />
-            <div class="tag">Tag name</div>
+            <div class="tag">{{blog.category}}</div>
           </div>
           <div class="track text-center mt-3 mb-0">
             <i class="uil uil-users-alt ml-3"></i>
@@ -103,7 +103,7 @@
       <div class="card my-card">
         <div class="post-img">
           <img src="{{blog.image.url}}" alt="" />
-          <div class="tag">Tag name</div>
+          <div class="tag">{{blog.category}}</div>
         </div>
         <div class="track text-center mt-3 mb-0">
           <i class="uil uil-users-alt ml-3"></i>

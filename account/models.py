@@ -46,6 +46,8 @@ class User(AbstractBaseUser,PermissionsMixin):
     username = models.CharField(max_length=50,unique=True)
     email = models.EmailField(max_length=100, unique=True)
     phone_number = models.CharField(max_length=12, blank=True)
+    image = models.ImageField(upload_to='user_profile/',blank=True)
+    about = models.CharField(max_length=200,blank=True)
 
     # required field
     date_joined = models.DateTimeField(auto_now_add=True)
@@ -70,3 +72,7 @@ class User(AbstractBaseUser,PermissionsMixin):
 
     def has_module_perms(self, app_label):
         return True
+
+    @property
+    def full_name(self):
+        return self.first_name.capitalize()+' '+self.last_name.capitalize()

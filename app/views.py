@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import CreateBlogForm
 from django.template.defaultfilters import slugify
 from django.contrib import messages
-from .models import Blog
+from .models import Blog, Category
 from taggit.models import Tag, TaggedItem
 from django.db.models import Count
 from django.db.models import Q
@@ -135,6 +135,7 @@ def about(request):
 
 def all_blogs(request):
     blog = Blog.objects.all()
+    categories = Category.objects.all()
     if request.POST:
         blog_name = request.POST.get('blog_name')
         author = request.POST.get('author')
@@ -143,20 +144,18 @@ def all_blogs(request):
         sort_by = request.POST.get('sort_by')
         sort_dir = request.POST.get('sort_dir')
         sort = sort_dir + sort_by.lower()
-        # blog = Blog.objects.filter(created_by__username__icontains=author,title__icontains=blog_name,tags__name__in=tags).order_by(sort)
         blog = blog.order_by(sort)
         if blog_name != '':
             blog = blog.filter(Q(title__icontains=blog_name) | Q(long_description__icontains=blog_name) | Q(short_description__icontains=blog_name) )
         if author != '':
             blog = blog.filter(created_by__username__icontains=author)
         if category != 'all':
-            # blog = blog.filter(#something)
-            pass
-        print(blog)
+            blog = blog.filter(category__name=category)
         
     
     context = {
         'blogs':blog[:6],
+        'category':categories,
     }
 
     return render(request,'app/allblogs.html',context)
