@@ -4,16 +4,27 @@
       <i class="fa-brands fa-blogger"></i>
     </div>
     <div class="links">
-      <a href="{% url 'home' %}" {% if request.path == '/' %}id="nav_active"{% endif %}>Home</a>
-      <a href="{% url 'all_blogs' %}" {% if 'blogs/all' in request.path %}id="nav_active"{% endif %}>All Blog</a>
-      <a href="pages/blog.html" {% if 'category' in request.path %}id="nav_active"{% endif %}>Category</a>
-      <a href="{% url 'about' %}" {% if 'tags' in request.path %}id="nav_active"{% endif %}>Tag</a>
-      <a href="{% url 'about' %}" {% if 'about' in request.path %}id="nav_active"{% endif %}>About</a>
+      <a href="{% url 'home' %}" {% if request.path == '/' %}id="nav_active" {% endif %} class="a_highlight">Home</a>
+      <a href="{% url 'all_blogs' %}" {% if 'blogs/all' in request.path %}id="nav_active" {% endif %}
+        class="a_highlight">All Blog</a>
+      <div class="dropdown">
+        <button class="btn dropdown-toggle" type="button" id="categoryDropdown" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          Categories
+        </button>
+        <div class="dropdown-menu" aria-labelledby="categoryDropdown">
+          {% for category in categories %}
+          <a class="dropdown-item" href="#">{{category}}</a>
+          {% endfor %}
+        </div>
+      </div>
+      <a href="{% url 'about' %}" {% if 'about' in request.path %}id="nav_active" {% endif %}
+        class="a_highlight">About</a>
     </div>
     <div class="action-btn">
       {% if request.user.is_authenticated %}
       <div>
-        <span class="mr-2" style="font-size:16px;">Hi, {{request.user.first_name}} </span>  
+        <span class="mr-2" style="font-size:16px;">Hi, {{request.user.first_name}} </span>
         <a href="{% url 'dashboard' %}"><button class="btn btn-danger" style="font-size: 16px">Dashboard</button></a>
       </div>
       {% else %}

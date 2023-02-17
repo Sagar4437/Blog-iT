@@ -165,3 +165,7 @@ def all_blogs(request):
     }
 
     return render(request,'app/allblogs.html',context)
+
+
+def categories(request):
+    return render(request, 'app/categories.html')
