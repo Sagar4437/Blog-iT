@@ -1156,6 +1156,12 @@ a {
   font-weight: bold;
 }
 
+#nav_active{
+  border-bottom: #ff4b64 solid;
+  padding-bottom: 5px;
+  border-radius: 5px;
+}
+
 .dataTables_empty {
   font-size: 14px;
 }
