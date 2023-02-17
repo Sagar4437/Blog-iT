@@ -3,6 +3,7 @@ from .forms import CreateBlogForm
 from django.template.defaultfilters import slugify
 from django.contrib import messages
 from .models import Blog, Category
+from account.models import User
 from taggit.models import Tag, TaggedItem
 from django.db.models import Count
 from django.db.models import Q
@@ -28,8 +29,13 @@ def home(request):
 
 def dashboard(request):
     blogs = Blog.objects.filter(created_by=request.user).order_by('-created_at')
+    if request.user != None:
+        user = request.user
+    else:
+        user = User.objects.get(username='Guest')
     context = {
         'blogs':blogs,
+        'user':user,
     }
     return render(request,'app/dashboard.html',context)
 

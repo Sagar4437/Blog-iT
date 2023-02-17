@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from .models import User
-from .forms import UserForm
+from .forms import UserForm, UpdateProfileForm
 # Create your views here.
 def register(request):
     if request.method == "POST":
@@ -49,3 +49,21 @@ def logout_view(request):
     logout(request)
     messages.success(request,'You have been logged out successfully!')
     return render(request,'account/logout.html')
+
+def update_profile(request):
+    user = request.user
+    form = UpdateProfileForm(instance=user)
+    if request.POST:
+        form = UpdateProfileForm(request.POST, request.FILES, instance=user)
+        if form.is_valid():
+            form.save()
+            messages.success(request,'Profile has been updated Successfully')
+            return redirect('dashboard')
+        else:
+            messages.error(request, form.errors)
+            return redirect('update_profile')
+    context = {
+        'form':form,
+        'user':user,
+    }
+    return render(request,'account/update-profile.html',context)
