@@ -8,13 +8,13 @@
       <a href="{% url 'all_blogs' %}" {% if 'blogs/all' in request.path %}id="nav_active" {% endif %}
         class="a_highlight">All Blog</a>
       <div class="dropdown">
-        <button class="btn dropdown-toggle" type="button" id="categoryDropdown" data-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="false">
+        <button class="btn dd_active" type="button" id="categoryDropdown" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false" {% if 'categories/' in request.path %}style="border-bottom: #ff4b64 solid; padding-bottom: 5px; border-radius: 5px;"{% endif %}>
           Categories
         </button>
         <div class="dropdown-menu" aria-labelledby="categoryDropdown">
           {% for category in categories %}
-          <a class="dropdown-item" href="#">{{category}}</a>
+          <a class="dropdown-item" href="{% url 'category_details' category.name %}">{{category}}</a>
           {% endfor %}
         </div>
       </div>

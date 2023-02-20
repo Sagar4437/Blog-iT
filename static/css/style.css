@@ -1156,16 +1156,24 @@ a {
   font-weight: bold;
 }
 
-#nav_active, #nav_active:hover{
+#nav_active {
   border-bottom: #ff4b64 solid;
   padding-bottom: 5px;
   border-radius: 5px;
 }
-#nav_active:hover{
+
+.dd_active {
   border-bottom: #ff4b64 solid;
   padding-bottom: 5px;
   border-radius: 5px;
 }
+
+#nav_active:hover {
+  border-bottom: #ff4b64 solid;
+  padding-bottom: 5px;
+  border-radius: 5px;
+}
+
 .dataTables_empty {
   font-size: 14px;
 }
@@ -1189,20 +1197,21 @@ a {
   height: 40px;
   font-size: 12px;
 }
+
 #categoryDropdown{
   font-size: 16px !important;
   font-weight: 500;
   background-color: white;
 }
 
-#categoryDropdown:hover{
+#categoryDropdown:hover {
   border-bottom: #ff4b64 solid;
   padding-bottom: 5px;
   border-radius: 5px;
   color: #3073c0;
 }
 
-.a_highlight:hover{
+.a_highlight:hover {
   border-bottom: #ff4b64 solid;
   padding-bottom: 5px;
   border-radius: 5px;

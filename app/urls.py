@@ -21,7 +21,7 @@ urlpatterns = [
     # other pages
     path('about-us',views.about, name="about"),
     path('blogs/all/',views.all_blogs, name="all_blogs"),
-    path('categories',views.categories, name="categories"),
+    path('categories/<str:category_name>/',views.category_details, name="category_details"),
 
 
 
