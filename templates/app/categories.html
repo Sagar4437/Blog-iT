@@ -12,35 +12,35 @@
                                 <span class="material-icons"> keyboard_return </span> Go
                                 back
                             </a>
-                            <h1>Tag</h1>
+                            <h1>Category</h1>
                         </div>
                     </div>
                 </div>
 
                 <center>
                     <div class="typo">
-                        <h1 class="title">Tag name</h1>
+                        <h1 class="title">{{category_name}}</h1>
                         <p>
                             Lorem ipsum began as scrambled, nonsensical Latin derived from
                             Cicero's 1st-century BC text De Finibus Bonorum et Malorum.
                         </p>
                     </div>
                 </center>
+                {% if top_blogs.count > 0 %}
                 <section class="sp">
                     <div class="container">
                         <h1 class="sec-title">Top posts</h1>
                         <div class="grid-2 blog">
                             <!-- card -->
-                            <a href="#">
+                            {% for blog in top_blogs %}
+                            <a href="{% url 'view_blog' blog.slug %}">
                                 <div class="card">
                                     <div class="post-img">
-                                        <img src="../images/post.png" alt="" />
-                                        <div class="tag">Tag name</div>
+                                        <img src="{{blog.image.url}}" alt="" />
                                     </div>
                                     <div class="card-content">
                                         <h3>
-                                            A blog title and other stuffs will add here, also we
-                                            can include.
+                                            {{blog.short_description | truncatechars:80 | title}}
                                         </h3>
                                         <div class="author">
                                             <div class="profile-pic">
@@ -54,31 +54,7 @@
                                     </div>
                                 </div>
                             </a>
-                            <!-- card end-->
-                            <!-- card -->
-                            <a href="#">
-                                <div class="card">
-                                    <div class="post-img">
-                                        <img src="../images/post.png" alt="" />
-                                        <div class="tag">Tag name</div>
-                                    </div>
-                                    <div class="card-content">
-                                        <h3>
-                                            A blog title and other stuffs will add here, also we
-                                            can include.
-                                        </h3>
-                                        <div class="author">
-                                            <div class="profile-pic">
-                                                <img src="../images/author.svg" alt="" />
-                                            </div>
-                                            <div class="details">
-                                                <p>Author name</p>
-                                                <small>June 20, 2022</small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
+                            {% endfor %}
                             <!-- card end-->
                         </div>
                         <center>
@@ -90,19 +66,18 @@
                 </section>
                 <section class="sp">
                     <div class="container">
-                        <h1 class="sec-title">Treandy</h1>
+                        <h1 class="sec-title">Most Liked</h1>
                         <div class="grid-3 blog-grid">
                             <!-- card -->
-                            <a href="#">
+                            {% for blog in most_liked %}
+                            <a href="{% url 'view_blog' blog.slug %}">
                                 <div class="card">
                                     <div class="post-img">
-                                        <img src="../images/post.png" alt="" />
-                                        <div class="tag">Tag name</div>
+                                        <img src="{{blog.image.url}}" alt="" />
                                     </div>
                                     <div class="card-content">
                                         <h3>
-                                            A blog title and other stuffs will add here, also we
-                                            can include.
+                                            {{blog.short_description | truncatechars:80 | title}}
                                         </h3>
                                         <div class="author">
                                             <div class="profile-pic">
@@ -116,56 +91,7 @@
                                     </div>
                                 </div>
                             </a>
-                            <!-- card end-->
-                            <!-- card -->
-                            <a href="#">
-                                <div class="card">
-                                    <div class="post-img">
-                                        <img src="../images/post.png" alt="" />
-                                        <div class="tag">Tag name</div>
-                                    </div>
-                                    <div class="card-content">
-                                        <h3>
-                                            A blog title and other stuffs will add here, also we
-                                            can include.
-                                        </h3>
-                                        <div class="author">
-                                            <div class="profile-pic">
-                                                <img src="../images/author.svg" alt="" />
-                                            </div>
-                                            <div class="details">
-                                                <p>Author name</p>
-                                                <small>June 20, 2022</small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                            <!-- card end-->
-                            <!-- card -->
-                            <a href="#">
-                                <div class="card">
-                                    <div class="post-img">
-                                        <img src="../images/post.png" alt="" />
-                                        <div class="tag">Tag name</div>
-                                    </div>
-                                    <div class="card-content">
-                                        <h3>
-                                            A blog title and other stuffs will add here, also we
-                                            can include.
-                                        </h3>
-                                        <div class="author">
-                                            <div class="profile-pic">
-                                                <img src="../images/author.svg" alt="" />
-                                            </div>
-                                            <div class="details">
-                                                <p>Author name</p>
-                                                <small>June 20, 2022</small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
+                            {% endfor %}
                             <!-- card end-->
                         </div>
                         <center>
@@ -177,19 +103,18 @@
                 </section>
                 <section class="sp">
                     <div class="container">
-                        <h1 class="sec-title">Featueal</h1>
+                        <h1 class="sec-title">New Arrival</h1>
                         <div class="grid-3 blog-grid">
                             <!-- card -->
-                            <a href="#">
+                            {% for blog in new_blogs %}
+                            <a href="{% url 'view_blog' blog.slug %}">
                                 <div class="card">
                                     <div class="post-img">
-                                        <img src="../images/post.png" alt="" />
-                                        <div class="tag">Tag name</div>
+                                        <img src="{{blog.image.url}}" alt="" />
                                     </div>
                                     <div class="card-content">
                                         <h3>
-                                            A blog title and other stuffs will add here, also we
-                                            can include.
+                                            {{blog.short_description | truncatechars:80 | title}}
                                         </h3>
                                         <div class="author">
                                             <div class="profile-pic">
@@ -203,56 +128,7 @@
                                     </div>
                                 </div>
                             </a>
-                            <!-- card end-->
-                            <!-- card -->
-                            <a href="#">
-                                <div class="card">
-                                    <div class="post-img">
-                                        <img src="../images/post.png" alt="" />
-                                        <div class="tag">Tag name</div>
-                                    </div>
-                                    <div class="card-content">
-                                        <h3>
-                                            A blog title and other stuffs will add here, also we
-                                            can include.
-                                        </h3>
-                                        <div class="author">
-                                            <div class="profile-pic">
-                                                <img src="../images/author.svg" alt="" />
-                                            </div>
-                                            <div class="details">
-                                                <p>Author name</p>
-                                                <small>June 20, 2022</small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                            <!-- card end-->
-                            <!-- card -->
-                            <a href="#">
-                                <div class="card">
-                                    <div class="post-img">
-                                        <img src="../images/post.png" alt="" />
-                                        <div class="tag">Tag name</div>
-                                    </div>
-                                    <div class="card-content">
-                                        <h3>
-                                            A blog title and other stuffs will add here, also we
-                                            can include.
-                                        </h3>
-                                        <div class="author">
-                                            <div class="profile-pic">
-                                                <img src="../images/author.svg" alt="" />
-                                            </div>
-                                            <div class="details">
-                                                <p>Author name</p>
-                                                <small>June 20, 2022</small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
+                            {% endfor %}
                             <!-- card end-->
                         </div>
                         <center>
@@ -262,6 +138,11 @@
                         </center>
                     </div>
                 </section>
+                {% else %}
+                <div class="card card-body">
+                    <span style="font-size:25px; height:200px; margin: 125px 0 0 0; font-weight:500" class="text-center">No blogs in this category</span>
+                </div>
+                {% endif %}
             </div>
             <!-- left layout end -->
 
@@ -270,33 +151,17 @@
                 <div class="block">
                     <h2 class="title2">Top Tags</h2>
                     <div class="blog-tags">
-                        <div class="tag">Tag</div>
-                        <div class="tag">Tag content</div>
-                        <div class="tag">Tag</div>
-                        <div class="tag">Tag content</div>
-                        <div class="tag">Tag content</div>
-                        <div class="tag">Tag</div>
-                        <div class="tag">Tag content</div>
-                        <div class="tag">Tag content</div>
-                        <div class="tag">Tag</div>
-                        <div class="tag">Tag content</div>
-                        <div class="tag">Tag</div>
+                        {% for tag in blog_top_tags %}
+                            <div class="tag">{{tag}}</div>
+                        {% endfor %}
                     </div>
                 </div>
                 <div class="block">
                     <h2 class="title2">Other Tags</h2>
                     <div class="blog-tags">
-                        <div class="tag">Tag</div>
-                        <div class="tag">Tag content</div>
-                        <div class="tag">Tag</div>
-                        <div class="tag">Tag content</div>
-                        <div class="tag">Tag content</div>
-                        <div class="tag">Tag</div>
-                        <div class="tag">Tag content</div>
-                        <div class="tag">Tag content</div>
-                        <div class="tag">Tag</div>
-                        <div class="tag">Tag content</div>
-                        <div class="tag">Tag</div>
+                        {% for tag in other_top_tags %}
+                            <div class="tag">{{tag}}</div>
+                        {% endfor %}
                     </div>
                 </div>
             </div>

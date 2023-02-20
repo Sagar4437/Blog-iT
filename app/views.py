@@ -158,7 +158,7 @@ def all_blogs(request):
         if category != 'all':
             blog = blog.filter(category__name=category)
         
-    
+
     context = {
         'blogs':blog[:6],
         'category':categories,
@@ -168,4 +168,18 @@ def all_blogs(request):
 
 
 def category_details(request,category_name):
-    return render(request, 'app/categories.html')
+    top_blogs = Blog.objects.filter(category__name=category_name).order_by('-views')
+    new_blogs = Blog.objects.filter(category__name=category_name).order_by('created_at')
+    most_liked = Blog.objects.filter(category__name=category_name).order_by('-likes')
+    blog_top_tags = top_blogs.values('tags__name').annotate(count=Count('tags')).order_by('-count')
+    blog_top_tags = list(blog_top_tags.values_list('tags__name', flat=True))[:10]
+    other_top_tags = Tag.objects.annotate(num_times_used=Count('taggit_taggeditem_items')).order_by('-num_times_used')[:10]
+    context = {
+        'top_blogs':top_blogs,
+        'new_blogs':new_blogs,
+        'most_liked':most_liked,
+        'category_name':category_name,
+        'blog_top_tags':blog_top_tags,
+        'other_top_tags':other_top_tags,
+    }
+    return render(request, 'app/categories.html',context)
