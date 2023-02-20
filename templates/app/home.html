@@ -87,9 +87,9 @@
       {% endfor %}
     </div>
     <center>
-      <button href="#" class="btn btn-danger rounded mybtn mt-5" style="font-size: 12px">
+      <a href="{% url 'view_all_blogs' heading='top blogs' sort_method='-views' %}" class="btn btn-danger rounded mybtn mt-5" style="font-size: 12px; padding-top:10px">
         View all &nbsp;<i class="fa-solid fa-arrow-right" style="color:white;"></i>
-    </button>
+      </a>
     </center>
   </div>
 </section>
@@ -131,9 +131,9 @@
     {% endfor %}
     </div>
     <center>
-      <button href="#" class="btn btn-danger rounded mybtn mt-5" style="font-size: 12px">
+      <a href="{% url 'view_all_blogs' heading='new blogs' sort_method='-created_at' %}" class="btn btn-danger rounded mybtn mt-5" style="font-size: 12px; padding-top:10px">
         View all &nbsp;<i class="fa-solid fa-arrow-right" style="color:white;"></i>
-    </button>
+      </a>
     </center>
   </div>
 </section>

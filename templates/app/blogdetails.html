@@ -168,7 +168,7 @@
                         <div class="card">
                             <div class="post-img">
                                 <img src="{{blog.image.url}}" alt="" />
-                                <div class="tag">Category</div>
+                                <div class="tag">{{blog.category}}</div>
                                 
                             </div>
                             <div class="card-content">
@@ -208,7 +208,7 @@
                     <h2 class="title2">Top Tags</h2>
                     <div class="blog-tags">
                         {% for tag in top_tags %}
-                            <div class="tag">{{tag}}</div>
+                        <a href="{% url 'view_all_blogs_by_tag' tag %}" ><div class="tag">{{tag}}</div></a>
                         {% endfor %}
                     </div>
                 </div>

@@ -6,14 +6,8 @@
     <div class="page-top">
       <div class="top flex">
         <div class="page-name">
-          <a href="#" onclick="history.back()" class="learn"> <span class="material-icons"> keyboard_return </span> Go back </a>
-          <h1>All Blogs</h1>
-        </div>
-        <div class="search-bar s-active">
-          <input type="text" placeholder="Search" />
-          <div class="animated-search">
-            <i class="uil uil-search"></i>
-          </div>
+            <a href="#" onclick="history.back()" class="learn"> <span class="material-icons"> keyboard_return </span> Go back </a>
+          <h1>{{heading}}</h1>
         </div>
       </div>
     </div>
@@ -21,9 +15,7 @@
 </main>
 <div class="container mt-5 pt-5">
   
-<div class="container">
-  {% include 'include/filter.html' %}
-</div>
+
 <section class="sp pt-5">
   <div class="container">
     {% if blogs.count == 0 %}

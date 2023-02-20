@@ -22,7 +22,8 @@ urlpatterns = [
     path('about-us',views.about, name="about"),
     path('blogs/all/',views.all_blogs, name="all_blogs"),
     path('categories/<str:category_name>/',views.category_details, name="category_details"),
-
-
+    path('categories/<str:category_name>/<str:heading>/<str:sort_method>/',views.view_all_blogs_at_category, name="view_all_blogs_at_category"),
+    path('blog/view-all-<str:heading>/<str:sort_method>/',views.view_all_blogs, name="view_all_blogs"),
+    path('blog/view-all/<str:tag>',views.view_all_blogs_by_tag, name="view_all_blogs_by_tag"),
 
 ]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
 <main>
     <div class="container">
@@ -8,10 +9,7 @@
                 <div class="page-top">
                     <div class="top flex">
                         <div class="page-name">
-                            <a href="#" class="learn">
-                                <span class="material-icons"> keyboard_return </span> Go
-                                back
-                            </a>
+                            <a href="#" onclick="history.back()" class="learn"> <span class="material-icons"> keyboard_return </span> Go back </a>
                             <h1>Category</h1>
                         </div>
                     </div>
@@ -29,7 +27,7 @@
                 {% if top_blogs.count > 0 %}
                 <section class="sp">
                     <div class="container">
-                        <h1 class="sec-title">Top posts</h1>
+                        <h1 class="sec-title">Top Posts</h1>
                         <div class="grid-2 blog">
                             <!-- card -->
                             {% for blog in top_blogs %}
@@ -44,11 +42,11 @@
                                         </h3>
                                         <div class="author">
                                             <div class="profile-pic">
-                                                <img src="../images/author.svg" alt="" />
+                                                <img src="{{blog.created_by.image.url}}" style="margin-top:10px" />
                                             </div>
                                             <div class="details">
-                                                <p>Author name</p>
-                                                <small>June 20, 2022</small>
+                                                <p>{{blog.created_by.username}}</p>
+                                                <small>{{blog.created_at}}</small>
                                             </div>
                                         </div>
                                     </div>
@@ -58,16 +56,16 @@
                             <!-- card end-->
                         </div>
                         <center>
-                            <button href="#" class="btn btn-danger rounded mybtn mt-5" style="font-size: 12px">
-                              View all &nbsp;<i class="fa-solid fa-arrow-right" style="color:white;"></i>
-                          </button>
+                            <a href="{% url 'view_all_blogs_at_category' category_name=category_name heading='top blogs' sort_method='-views' %}" class="btn btn-danger rounded mybtn mt-5" style="font-size: 12px; padding-top:10px">
+                                View all &nbsp;<i class="fa-solid fa-arrow-right" style="color:white;"></i>
+                            </a>
                         </center>
                     </div>
                 </section>
                 <section class="sp">
                     <div class="container">
                         <h1 class="sec-title">Most Liked</h1>
-                        <div class="grid-3 blog-grid">
+                        <div class="grid-2 blog">
                             <!-- card -->
                             {% for blog in most_liked %}
                             <a href="{% url 'view_blog' blog.slug %}">
@@ -81,11 +79,11 @@
                                         </h3>
                                         <div class="author">
                                             <div class="profile-pic">
-                                                <img src="../images/author.svg" alt="" />
+                                                <img src="{{blog.created_by.image.url}}" style="margin-top:10px" />
                                             </div>
                                             <div class="details">
-                                                <p>Author name</p>
-                                                <small>June 20, 2022</small>
+                                                <p>{{blog.created_by.username}}</p>
+                                                <small>{{blog.created_at}}</small>
                                             </div>
                                         </div>
                                     </div>
@@ -95,16 +93,16 @@
                             <!-- card end-->
                         </div>
                         <center>
-                            <button href="#" class="btn btn-danger rounded mybtn mt-5" style="font-size: 12px">
-                              View all &nbsp;<i class="fa-solid fa-arrow-right" style="color:white;"></i>
-                          </button>
+                            <a href="{% url 'view_all_blogs_at_category' category_name=category_name heading='most liked blogs' sort_method='-likes' %}" class="btn btn-danger rounded mybtn mt-5" style="font-size: 12px; padding-top:10px">
+                                View all &nbsp;<i class="fa-solid fa-arrow-right" style="color:white;"></i>
+                            </a>
                         </center>
                     </div>
                 </section>
                 <section class="sp">
                     <div class="container">
-                        <h1 class="sec-title">New Arrival</h1>
-                        <div class="grid-3 blog-grid">
+                        <h1 class="sec-title">New Posts</h1>
+                        <div class="grid-2 blog">
                             <!-- card -->
                             {% for blog in new_blogs %}
                             <a href="{% url 'view_blog' blog.slug %}">
@@ -118,11 +116,11 @@
                                         </h3>
                                         <div class="author">
                                             <div class="profile-pic">
-                                                <img src="../images/author.svg" alt="" />
+                                                <img src="{{blog.created_by.image.url}}" style="margin-top:10px" />
                                             </div>
                                             <div class="details">
-                                                <p>Author name</p>
-                                                <small>June 20, 2022</small>
+                                                <p>{{blog.created_by.username}}</p>
+                                                <small>{{blog.created_at}}</small>
                                             </div>
                                         </div>
                                     </div>
@@ -132,9 +130,9 @@
                             <!-- card end-->
                         </div>
                         <center>
-                            <button href="#" class="btn btn-danger rounded mybtn mt-5" style="font-size: 12px">
-                              View all &nbsp;<i class="fa-solid fa-arrow-right" style="color:white;"></i>
-                          </button>
+                            <a href="{% url 'view_all_blogs_at_category' category_name=category_name heading='new blogs' sort_method='-created_at' %}" class="btn btn-danger rounded mybtn mt-5" style="font-size: 12px; padding-top:10px">
+                                View all &nbsp;<i class="fa-solid fa-arrow-right" style="color:white;"></i>
+                            </a>
                         </center>
                     </div>
                 </section>
@@ -152,7 +150,7 @@
                     <h2 class="title2">Top Tags</h2>
                     <div class="blog-tags">
                         {% for tag in blog_top_tags %}
-                            <div class="tag">{{tag}}</div>
+                            <a href="{% url 'view_all_blogs_by_tag' tag %}" ><div class="tag">{{tag}}</div></a>
                         {% endfor %}
                     </div>
                 </div>
@@ -160,7 +158,7 @@
                     <h2 class="title2">Other Tags</h2>
                     <div class="blog-tags">
                         {% for tag in other_top_tags %}
-                            <div class="tag">{{tag}}</div>
+                        <a href="{% url 'view_all_blogs_by_tag' tag %}" ><div class="tag">{{tag}}</div></a>
                         {% endfor %}
                     </div>
                 </div>

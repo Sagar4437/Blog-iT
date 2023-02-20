@@ -183,3 +183,27 @@ def category_details(request,category_name):
         'other_top_tags':other_top_tags,
     }
     return render(request, 'app/categories.html',context)
+
+def view_all_blogs(request,heading,sort_method):
+    blogs = Blog.objects.all().order_by(sort_method)
+    context = {
+        'heading':heading,
+        'blogs':blogs,
+    }
+    return render(request,'app/view_all.html',context)
+
+def view_all_blogs_at_category(request,category_name,heading,sort_method):
+    blogs = Blog.objects.filter(category__name=category_name).order_by(sort_method)
+    context = {
+        'heading':heading+' in '+category_name,
+        'blogs':blogs,
+    }
+    return render(request,'app/view_all.html',context)
+
+def view_all_blogs_by_tag(request,tag):
+    blogs = Blog.objects.filter(tags__name=tag)
+    context = {
+        'heading':'Blogs related to #'+tag,
+        'blogs':blogs,
+    }
+    return render(request,'app/view_all.html',context)
