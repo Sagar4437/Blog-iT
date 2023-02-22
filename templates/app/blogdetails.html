@@ -50,7 +50,8 @@
                                 {{blog.long_description |safe}}
                                 <div class="blog-tags">
                                     {% for tag in blog.tags.all %}
-                                    <div class="tag">{{tag}}</div>
+                                    <a href="{% url 'view_all_blogs_by_tag' tag %}" ><div class="tag">{{tag}}</div></a>
+
                                     {% endfor %}
                                 </div>
                                 <div class="social-share">

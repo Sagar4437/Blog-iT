@@ -29,6 +29,11 @@ def home(request):
 
 def dashboard(request):
     blogs = Blog.objects.filter(created_by=request.user).order_by('-created_at')
+    views = 0
+    likes = 0
+    for blog in blogs:
+        views += blog.views
+        likes += blog.likes
     if request.user != None:
         user = request.user
     else:
@@ -36,6 +41,8 @@ def dashboard(request):
     context = {
         'blogs':blogs,
         'user':user,
+        'views':views,
+        'likes':likes,
     }
     return render(request,'app/dashboard.html',context)
 
