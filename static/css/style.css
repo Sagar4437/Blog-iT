@@ -1216,3 +1216,7 @@ a {
   padding-bottom: 5px;
   border-radius: 5px;
 }
+
+.filled{
+  color: red;
+}

@@ -72,6 +72,24 @@ def statistics(request):
     }
     return render(request,'app/statistics.html',context)
 
+def all_bookmarked_blogs(request):
+    blogs = Blog.objects.filter(created_by=request.user).order_by('-created_at')
+    context = {
+        'blogs':blogs,
+    }
+    return render(request,'app/bookmarked.html',context)
+
+
+def bookmark_blog(request,slug):
+    blog = Blog.objects.get(slug=slug)
+    if blog.bookmarked_by.filter(username=request.user.username).exists():
+        blog.bookmarked_by.remove(request.user)
+    else:
+        blog.bookmarked_by.add(request.user)
+    blog.views-=1
+    blog.save()
+    return redirect(view_blog,slug=slug)
+
 def edit_blog(request,slug):
     try:
         blog = Blog.objects.get(slug=slug,created_by=request.user)
@@ -133,12 +151,14 @@ def view_blog(request,slug):
     related_blogs = Blog.objects.filter(created_by=blog.created_by).order_by('-created_at')[:3]
     top_blogs = Blog.objects.filter(created_by=blog.created_by).order_by('-views','-likes')[:3]
     top_tags = Tag.objects.annotate(num_times_used=Count('taggit_taggeditem_items')).order_by('-num_times_used')[:10]
+    is_bookmarked = blog.bookmarked_by.filter(username=request.user.username).exists()
     context={
         'blog':blog,
         'recent_blogs':recent_blogs,
         'related_blogs':related_blogs,
         'top_blogs':top_blogs,
         'top_tags':top_tags,
+        'is_bookmarked':is_bookmarked,
     }
     return render(request, 'app/blogdetails.html',context)
 

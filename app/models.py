@@ -15,6 +15,7 @@ class Category(models.Model):
 class Blog(models.Model):
     created_by = models.ForeignKey(User,on_delete=models.CASCADE,default=None,blank=False)
     category = models.ForeignKey(Category, on_delete=models.CASCADE,default=None,blank=False)
+    bookmarked_by = models.ManyToManyField(User, blank=True, related_name='bookmarked_blogs')
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200,unique=True)
     short_description = models.CharField(max_length=500,blank=False,default=None)

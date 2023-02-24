@@ -28,11 +28,15 @@
                                 <i class="uil uil-users-alt"></i>
                                 <p class="view-count">{{blog.views}}+ views</p>
                             </div>
-                            <button class="btn btn-info">
-                                <i class="uil uil-bookmark-full"></i>
-                            </button>
-                            <div class="track">
-                            </div>
+                            {% if is_bookmarked %}
+                            <a href="{% url 'bookmark_blog' blog.slug %}">
+                                <i class="fa-solid fa-bookmark fa-2x ml-3 text-danger"></i>
+                            </a>
+                            {% else %}
+                            <a href="{% url 'bookmark_blog' blog.slug %}">
+                                <i class="fa-regular fa-bookmark fa-2x ml-3 text-danger"></i>
+                            </a>
+                            {% endif %}
                         </div>
                     </div>
                 </center>

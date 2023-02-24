@@ -17,6 +17,8 @@ urlpatterns = [
     path('like-blog/<str:slug>/',views.like_blog, name="like_blog"),
 
     path('blog-statistics',views.statistics, name="statistics"),
+    path('blog/bookmarked/',views.all_bookmarked_blogs, name="all_bookmarked_blogs"),
+    path('blog/bookmarked/<str:slug>',views.bookmark_blog, name="bookmark_blog"),
 
     # other pages
     path('about-us',views.about, name="about"),
