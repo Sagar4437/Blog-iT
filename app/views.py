@@ -7,7 +7,7 @@ from account.models import User
 from taggit.models import Tag, TaggedItem
 from django.db.models import Count
 from django.db.models import Q
-
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def home(request):
@@ -27,7 +27,10 @@ def home(request):
     }
     return render(request, 'app/home.html',context)
 
+@login_required(login_url='login')
 def dashboard(request):
+    if not request.user.is_creator:
+        return redirect('update_profile')
     blogs = Blog.objects.filter(created_by=request.user).order_by('-created_at')
     views = 0
     likes = 0
@@ -46,6 +49,7 @@ def dashboard(request):
     }
     return render(request,'app/dashboard.html',context)
 
+@login_required(login_url='login')
 def create_blog(request):
     form = CreateBlogForm()
     if request.method=="POST":
@@ -58,6 +62,9 @@ def create_blog(request):
             form.save_m2m()
             blog.slug = slugify(blog.title+"-"+str(blog.id))
             blog.save()
+            user = request.user
+            user.is_creator = True
+            user.save()
             messages.success(request,'Blog has been created successfully')
             return redirect('dashboard')
         else:
@@ -65,6 +72,7 @@ def create_blog(request):
             messages.error(request,'Please fill all details properly.')
     return render(request,'app/create_blog.html',{'form':form})
 
+@login_required(login_url='login')
 def statistics(request):
     blogs = Blog.objects.filter(created_by=request.user).order_by('-created_at')
     context = {
@@ -72,6 +80,7 @@ def statistics(request):
     }
     return render(request,'app/statistics.html',context)
 
+@login_required(login_url='login')
 def all_bookmarked_blogs(request):
     blogs = Blog.objects.filter(created_by=request.user).order_by('-created_at')
     context = {
@@ -79,7 +88,7 @@ def all_bookmarked_blogs(request):
     }
     return render(request,'app/bookmarked.html',context)
 
-
+@login_required(login_url='login')
 def bookmark_blog(request,slug):
     blog = Blog.objects.get(slug=slug)
     if blog.bookmarked_by.filter(username=request.user.username).exists():
@@ -92,6 +101,7 @@ def bookmark_blog(request,slug):
     blog.save()
     return redirect(view_blog,slug=slug)
 
+@login_required(login_url='login')
 def edit_blog(request,slug):
     try:
         blog = Blog.objects.get(slug=slug,created_by=request.user)
@@ -116,15 +126,19 @@ def edit_blog(request,slug):
     }
     return render(request,'app/create_blog.html',context)
 
+@login_required(login_url='login')
 def delete_blog(request,slug):
     try:
         Blog.objects.get(slug=slug,created_by=request.user).delete()
+        if Blog.objects.filter(created_by=request.user).count() == 0:
+            request.user.update(is_creator=False)
         messages.success(request, 'Blog has been deleted successfully')
         return redirect('statistics')
     except:
         messages.error(request,'No Blog Found!')
         return redirect('dashboard')
 
+@login_required(login_url='login')
 def make_featured(request,slug):
     try:
         blog = Blog.objects.get(slug=slug, created_by=request.user)
@@ -139,6 +153,7 @@ def make_featured(request,slug):
         messages.error(request,'Invalid Blog! Can not marked as featured.')
     return redirect('statistics')
 
+@login_required(login_url='login')
 def like_blog(request,slug):
     blog = get_object_or_404(Blog,slug=slug, created_by=request.user)
     if blog.liked_by.filter(username=request.user.username).exists():
@@ -152,6 +167,7 @@ def like_blog(request,slug):
     blog.views -= 1
     blog.save()
     return redirect('view_blog',slug)
+
 
 def view_blog(request,slug):
     blog = get_object_or_404(Blog,slug=slug, created_by=request.user)
@@ -246,3 +262,6 @@ def view_all_blogs_by_tag(request,tag):
         'blogs':blogs,
     }
     return render(request,'app/view_all.html',context)
+
+
+#___________________________________________________________________________________

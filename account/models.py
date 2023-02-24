@@ -48,7 +48,8 @@ class User(AbstractBaseUser,PermissionsMixin):
     phone_number = models.CharField(max_length=12, blank=True)
     image = models.ImageField(upload_to='user_profile/',blank=True)
     about = models.TextField(max_length=200,blank=True)
-
+    is_creator = models.BooleanField(default=False)
+    
     # required field
     date_joined = models.DateTimeField(auto_now_add=True)
     last_login = models.DateTimeField(auto_now_add=True)

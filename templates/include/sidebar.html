@@ -1,9 +1,11 @@
 <div class="col-3 text-center">
     <div class="card">
         <ul class="list-group list-group-flush text-left">
+            {% if request.user.is_creator %}
             <li class="list-group-item " {% if 'dashboard' in request.path %} id="highlight" {% endif %}> <a href="{% url 'dashboard' %}" class="my-a"> Dashboard</a></li>
-            <li class="list-group-item " {% if 'update-profile' in request.path %} id="highlight" {% endif %}> <a href="{% url 'update_profile' %}" class="my-a"> Update Profile</a></li>
             <li class="list-group-item " {% if 'blog-statistics' in request.path %} id="highlight" {% endif %}> <a href="{% url 'statistics' %}" class="my-a"> Blog Statistics</a></li>
+            {% endif %}
+            <li class="list-group-item " {% if 'update-profile' in request.path %} id="highlight" {% endif %}> <a href="{% url 'update_profile' %}" class="my-a"> Update Profile</a></li>
             <li class="list-group-item " {% if 'bookmarked' in request.path %} id="highlight" {% endif %}> <a href="{% url 'all_bookmarked_blogs' %}" class="my-a"> Bookmarked</a></li>
             <li class="list-group-item "{% if 'create-blog' in request.path %} id="highlight" {% endif %}> <a href="{% url 'create_blog' %}" class="my-a"> Create Blog</a></li>
             <li class="list-group-item "> <a href="{% url 'logout' %}" class="my-a"> Logout</a></li>
