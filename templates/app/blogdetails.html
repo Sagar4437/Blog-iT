@@ -60,9 +60,15 @@
                                 </div>
                                 <div class="social-share">
                                     <div class="reactions">
-                                        <div class="likes">
-                                            <a href="{% url 'like_blog' blog.slug %}"><i class="uil uil-heart"></i> <span style="font-size:20px">{{blog.likes}}</span></a>
-                                        </div>
+                                        {% if is_liked %}
+                                            <div class="likes">
+                                                <a href="{% url 'like_blog' blog.slug %}"><i class="fa-solid fa-heart text-danger"></i> <span style="font-size:20px">{{blog.likes}}</span></a>
+                                            </div>
+                                        {% else %}
+                                            <div class="likes">
+                                                <a href="{% url 'like_blog' blog.slug %}"><i class="fa-regular fa-heart text-danger mr-3"></i> <span style="font-size:20px">{{blog.likes}}</span></a>
+                                            </div>
+                                        {% endif %}
                                         <div class="total-comments">
                                             <i class="uil uil-comment-alt"></i>
                                             <span style="font-size:20px">10</span>

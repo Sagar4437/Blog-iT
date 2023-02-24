@@ -84,8 +84,10 @@ def bookmark_blog(request,slug):
     blog = Blog.objects.get(slug=slug)
     if blog.bookmarked_by.filter(username=request.user.username).exists():
         blog.bookmarked_by.remove(request.user)
+        messages.success(request,f'You removed {blog.title} from bookmarked.')
     else:
         blog.bookmarked_by.add(request.user)
+        messages.success(request,f'You bookmarked {blog.title} ')
     blog.views-=1
     blog.save()
     return redirect(view_blog,slug=slug)
@@ -139,7 +141,15 @@ def make_featured(request,slug):
 
 def like_blog(request,slug):
     blog = get_object_or_404(Blog,slug=slug, created_by=request.user)
-    blog.likes += 1
+    if blog.liked_by.filter(username=request.user.username).exists():
+        blog.liked_by.remove(request.user)
+        blog.likes-=1
+        messages.success(request,f'You un-liked {blog.title} ')
+    else:
+        blog.liked_by.add(request.user)
+        blog.likes+=1
+        messages.success(request,f'You Liked {blog.title} ')
+    blog.views -= 1
     blog.save()
     return redirect('view_blog',slug)
 
@@ -152,6 +162,7 @@ def view_blog(request,slug):
     top_blogs = Blog.objects.filter(created_by=blog.created_by).order_by('-views','-likes')[:3]
     top_tags = Tag.objects.annotate(num_times_used=Count('taggit_taggeditem_items')).order_by('-num_times_used')[:10]
     is_bookmarked = blog.bookmarked_by.filter(username=request.user.username).exists()
+    is_liked = blog.liked_by.filter(username=request.user.username).exists()
     context={
         'blog':blog,
         'recent_blogs':recent_blogs,
@@ -159,6 +170,7 @@ def view_blog(request,slug):
         'top_blogs':top_blogs,
         'top_tags':top_tags,
         'is_bookmarked':is_bookmarked,
+        'is_liked':is_liked,
     }
     return render(request, 'app/blogdetails.html',context)
 
