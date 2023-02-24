@@ -49,6 +49,7 @@ class User(AbstractBaseUser,PermissionsMixin):
     image = models.ImageField(upload_to='user_profile/',blank=True)
     about = models.TextField(max_length=200,blank=True)
     is_creator = models.BooleanField(default=False)
+    subscribed_to = models.ManyToManyField('self', symmetrical=False)
     
     # required field
     date_joined = models.DateTimeField(auto_now_add=True)
