@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import CreateBlogForm
 from django.template.defaultfilters import slugify
 from django.contrib import messages
-from .models import Blog, Category
+from .models import Blog, Category, Comments
 from account.models import User
 from taggit.models import Tag, TaggedItem
 from django.db.models import Count
@@ -170,15 +170,33 @@ def like_blog(request,slug):
 
 
 def view_blog(request,slug):
-    blog = get_object_or_404(Blog,slug=slug, created_by=request.user)
+    blog = get_object_or_404(Blog,slug=slug)
     blog.views += 1
     blog.save()
+
+    # Get Feed Content
     recent_blogs = Blog.objects.filter(created_by=blog.created_by).order_by('-created_at')[:3]
     related_blogs = Blog.objects.filter(created_by=blog.created_by).order_by('-created_at')[:3]
     top_blogs = Blog.objects.filter(created_by=blog.created_by).order_by('-views','-likes')[:3]
     top_tags = Tag.objects.annotate(num_times_used=Count('taggit_taggeditem_items')).order_by('-num_times_used')[:10]
-    is_bookmarked = blog.bookmarked_by.filter(username=request.user.username).exists()
-    is_liked = blog.liked_by.filter(username=request.user.username).exists()
+
+    if request.user:
+        is_bookmarked = blog.bookmarked_by.filter(username=request.user.username).exists()
+        is_liked = blog.liked_by.filter(username=request.user.username).exists()
+    else:
+        is_bookmarked = False
+        is_liked = False
+
+    # get comments
+    comments = Comments.objects.filter(blog=blog)
+
+    # Save comment for blog
+    if request.POST and request.user.id != None:
+        print(request.user)
+        comment = request.POST.get('comment')
+        Comments.objects.get_or_create(user = request.user, blog=blog, comment=comment)
+        messages.success(request, f'You have commented on {blog.title}')
+
     context={
         'blog':blog,
         'recent_blogs':recent_blogs,
@@ -187,6 +205,7 @@ def view_blog(request,slug):
         'top_tags':top_tags,
         'is_bookmarked':is_bookmarked,
         'is_liked':is_liked,
+        'comments':comments
     }
     return render(request, 'app/blogdetails.html',context)
 

@@ -5,7 +5,7 @@
         {% csrf_token %}
         <center>
             <div class="logo f-logo">
-                <i class="fa-brands fa-blogger"></i>
+                <i class="fa-brands fa-blogger" style="font-size:8rem"></i>
             </div>
             <div class="inputs">
                 <div>
@@ -22,10 +22,10 @@
                         </div>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-danger rounded mybtn mt-5" style="font-size: 12px">
+                <button type="submit" class="btn btn-danger rounded mybtn mt-5" style="font-size: 14px">
                     Login &nbsp;<i class="fa-solid fa-arrow-right" style="color:white;"></i>
                 </button>
-                <p>Not have an account? <a href="{% url 'register' %}">Sign up</a></p>
+                <p style="margin-top:30px">Not have an account? <a href="{% url 'register' %}">Sign up</a></p>
             </div>
         </center>
     </form>

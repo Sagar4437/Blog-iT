@@ -81,7 +81,7 @@
                                         {% endif %}
                                         <div class="total-comments">
                                             <i class="uil uil-comment-alt"></i>
-                                            <span style="font-size:20px">10</span>
+                                            <span style="font-size:20px">{{comments.count}}</span>
                                         </div>
                                     </div>
                                     <div class="share">
@@ -94,67 +94,38 @@
                                     </div>
                                 </div>
                                 <!-- comments -->
+                                {% for comment in comments %}
+                                
                                 <div class="user-comment">
                                     <div class="author">
                                         <div class="profile-pic">
-                                            <img src="{% static 'images/author.svg' %}" alt="" />
+                                            <img src="{{comment.user.image.url}}" alt="" />
                                         </div>
                                         <div class="details">
-                                            <p>Author name</p>
-                                            <small>June 20, 2022</small>
+                                            <p>{{comment.user.username}}</p>
+                                            <small>{{comment.created_at}}</small>
                                         </div>
                                     </div>
                                     <div class="comment-sec-main">
                                         <div class="comment-sec">
-                                            <div class="comment">
+                                            <div class="comment" style="background-color:white; border: solid #757575;border-width: thin;">
                                                 <p>
-                                                    Lorem ipsum dolor sit amet consectetur adipisicing
-                                                    elit. Tempora magnam minima harum, dignissimos
-                                                    ipsa vero sequi ipsam, distinctio quisquam quo
-                                                    cupiditate sed recusandae expedita quod iste
-                                                    maiores rerum. Eaque, dignissimos.
+                                                    {{comment.comment | title}}
                                                 </p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="user-comment">
-                                    <div class="author">
-                                        <div class="profile-pic">
-                                            <img src="{% static 'images/author.svg' %}" alt="" />
-                                        </div>
-                                        <div class="details">
-                                            <p>Author name</p>
-                                            <small>June 20, 2022</small>
-                                        </div>
-                                    </div>
-                                    <div class="comment-sec-main">
-                                        <div class="comment-sec">
-                                            <div class="comment">
-                                                <p>
-                                                    Lorem ipsum dolor sit amet consectetur adipisicing
-                                                    elit. Tempora magnam minima harum, dignissimos
-                                                    ipsa vero sequi ipsam, distinctio quisquam quo
-                                                    cupiditate sed recusandae expedita quod iste
-                                                    maiores rerum. Eaque, dignissimos.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                {% endfor %}
                                 <!-- user comment end -->
                             </div>
                         </div>
                         <div class="comment-box">
                             <h3>Leave a new comment to this post</h3>
-                            <form action="">
-                                <textarea style="font-size:14px" placeholder="Type your comment...."></textarea>
-                                <div class="grid-3" >
-                                    <input type="text" style="text-size:14px" placeholder="Name" />
-                                    <input type="temail" style="text-size:14px" placeholder="Email" />
-                                    <input type="url" style="text-size:14px" placeholder="Website (optional)" />
-                                </div>
-                                <button type="submit" class="btn btn-danger mt-5" style="height:40px;width:200px;font-size:14px;">Post</button>
+                            <form action="" method="POST">
+                                {% csrf_token %}
+                                <textarea style="font-size:14px" name='comment' placeholder="Type your comment...." required></textarea>
+                                <button type="submit" class="btn btn-danger mt-5" style="height:40px;width:200px;font-size:14px;" onclick="return checkIfLogin('{{request.user}}')">Post</button>
                             </form>
                         </div>
                     </div>
@@ -238,4 +209,28 @@
         </div>
     </div>
 </main>
+
+<script>
+    function checkIfLogin(user){
+        if(user == 'AnonymousUser'){
+            Swal.fire({
+                title: 'Login Required!',
+                text: 'Please login to post your comment...',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Login!'
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    window.open('/account/login/','_self') 
+                }
+              })
+            return false
+        }
+        return true
+    }
+</script>
+
 {% endblock content %}

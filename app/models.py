@@ -34,3 +34,16 @@ class Blog(models.Model):
 
     class Meta:
         ordering = ['-created_at']
+
+class Comments(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE,blank=False)
+    blog = models.ForeignKey(Blog, on_delete=models.CASCADE)
+    comment = models.TextField()
+    parent_comment = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='replies')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        ordering = ['-created_at']
