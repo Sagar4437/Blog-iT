@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import CreateBlogForm
 from django.template.defaultfilters import slugify
 from django.contrib import messages
-from .models import Blog, Category, Comments
+from .models import Blog, Category, Comments, Newsletter
 from account.models import User
 from taggit.models import Tag, TaggedItem
 from django.db.models import Count
@@ -20,6 +20,7 @@ def home(request):
     # Delete the unused tags from the database
     unused_tags.delete()
 
+    
     context = {
         'featured_blog':featured_blog[0],
         'top_blogs':top_blogs,
@@ -284,3 +285,12 @@ def view_all_blogs_by_tag(request,tag):
 
 
 #___________________________________________________________________________________
+def subscribe(request):
+    if request.POST:
+        email = request.POST.get('email')
+        Newsletter.objects.create(email = email)
+        messages.success(request,'Thanks For Subscribing to Blog-It 😊')
+    else:
+        messages.error(request, 'Please enter valid email address')
+    return redirect('home')
+    

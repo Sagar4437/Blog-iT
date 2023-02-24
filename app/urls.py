@@ -28,4 +28,9 @@ urlpatterns = [
     path('blog/view-all-<str:heading>/<str:sort_method>/',views.view_all_blogs, name="view_all_blogs"),
     path('blog/view-all/<str:tag>',views.view_all_blogs_by_tag, name="view_all_blogs_by_tag"),
 
+
+    path('subscribe/',views.subscribe, name="subscribe"),
+
+
+
 ]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

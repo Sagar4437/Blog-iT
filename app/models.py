@@ -43,7 +43,18 @@ class Comments(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.title
+        return f"Comments for '{blog.title}'"
+
+    class Meta:
+        ordering = ['-created_at']
+
+class Newsletter(models.Model):
+    email = models.EmailField()
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{email} from Newsletter"
 
     class Meta:
         ordering = ['-created_at']

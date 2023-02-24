@@ -19,10 +19,11 @@
         </p>
       </div>
       <div class="newsletter">
-        <form method="POST">
+        <form method="POST" action="{% url 'subscribe' %}">
+          {% csrf_token %}
           <input type="email" name="email" maxlength="100" placeholder="Enter your email" required=""
               id="id_email" style="height:40px;font-size:16px"/>
-          <button class="btn btn-danger mb-2 mybtn" style="font-size:13px">Subscribe</button>
+          <button type="submit" class="btn btn-danger mb-2 mybtn" style="font-size:13px">Subscribe</button>
       </form>
       </div>
     </center>
