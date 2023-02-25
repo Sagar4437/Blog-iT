@@ -58,3 +58,8 @@ class Newsletter(models.Model):
 
     class Meta:
         ordering = ['-created_at']
+
+
+class Subscription(models.Model):
+    creator = models.ForeignKey(User,on_delete=models.CASCADE, blank=False)
+    subscribers = models.ManyToManyField(User,related_name='subscriptions')

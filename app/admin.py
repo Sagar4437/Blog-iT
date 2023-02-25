@@ -1,7 +1,6 @@
 from django.contrib import admin
-from . models import Blog,Category,Newsletter
+from . models import Blog,Category,Newsletter,Subscription
 
-from taggit.models import Tag, TaggedItem
 # Register your models here.
 
 class BlogAdmin(admin.ModelAdmin):
@@ -13,6 +12,16 @@ class CategoryAdmin(admin.ModelAdmin):
 class NewsletterAdmin(admin.ModelAdmin):
     list_display = ['email','is_active','created_at']
 
+class SubscriptionsAdmin(admin.ModelAdmin):
+    list_display = ['creator','all_subscribers','total']
+
+    def all_subscribers(self, creatorObj):
+        return ", ".join([p.username for p in creatorObj.subscribers.all()])
+
+    def total(self, creatorObj):
+        return creatorObj.subscribers.count()
+
 admin.site.register(Blog,BlogAdmin)
 admin.site.register(Category,CategoryAdmin)
 admin.site.register(Newsletter,NewsletterAdmin)
+admin.site.register(Subscription,SubscriptionsAdmin)
