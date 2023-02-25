@@ -47,8 +47,8 @@
               {{blog.title | capfirst | truncatechars:80}}
             </h3>
             <div class="author">
-              <div class="profile-pic">
-                <img src="{% static 'images/author.svg' %}" alt="" />
+              <div class="profile-pic pt-3">
+                <img src="{{blog.created_by.image.url}}" alt="" />
               </div>
               <div class="details">
                 <p>{{blog.created_by.username}}</p>

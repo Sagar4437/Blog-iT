@@ -67,6 +67,9 @@ def create_blog(request):
             user = request.user
             user.is_creator = True
             user.save()
+            # Create Subscription Profile
+            Subscription.objects.update_or_create(creator=request.user)
+
             messages.success(request,'Blog has been created successfully')
             return redirect('dashboard')
         else:
@@ -84,7 +87,7 @@ def statistics(request):
 
 @login_required(login_url='login')
 def all_bookmarked_blogs(request):
-    blogs = Blog.objects.filter(created_by=request.user).order_by('-created_at')
+    blogs = request.user.bookmarked_blogs.all()
     context = {
         'blogs':blogs,
     }
@@ -157,7 +160,7 @@ def make_featured(request,slug):
 
 @login_required(login_url='login')
 def like_blog(request,slug):
-    blog = get_object_or_404(Blog,slug=slug, created_by=request.user)
+    blog = get_object_or_404(Blog,slug=slug)
     if blog.liked_by.filter(username=request.user.username).exists():
         blog.liked_by.remove(request.user)
         blog.likes-=1
@@ -325,7 +328,7 @@ def subscribe(request):
     
 def author_detail(request,username):
     user = get_object_or_404(User,username=username)
-    subscription = Subscription.objects.get(creator=user) # Get the Subscription object with creator equal to user A
+    subscription = get_object_or_404(Subscription,creator__username=username) # Get the Subscription object with creator equal to user A
     subscribers = subscription.subscribers.all() # Get all subscribers of this Subscription
     top_blogs = Blog.objects.filter(created_by=user).order_by('-views')
     most_liked = Blog.objects.filter(created_by=user).order_by('-likes')

@@ -46,7 +46,7 @@ class User(AbstractBaseUser,PermissionsMixin):
     username = models.CharField(max_length=50,unique=True)
     email = models.EmailField(max_length=100, unique=True)
     phone_number = models.CharField(max_length=12, blank=True)
-    image = models.ImageField(upload_to='user_profile/',blank=True)
+    image = models.ImageField(upload_to='user_profile/',default='images/male.png',blank=True)
     about = models.TextField(max_length=200,blank=True)
     is_creator = models.BooleanField(default=False)
     

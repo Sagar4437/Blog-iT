@@ -15,10 +15,11 @@ def register(request):
             password = form.cleaned_data['password']
     
             user = User.objects.create_user(first_name=first_name, last_name=last_name,username=username,password=password, email=email)
-            user.ia_active = True
+            user.is_active = True
             user.save()
+            login(request,user)
             messages.success(request,'Your account has been register successfully')
-            return redirect('home')
+            messages.success(request,"You are now logged in!")
         else:
             messages.error(request,'Invalid Information')
     return render(request,'account/register.html')
@@ -30,7 +31,6 @@ def login_view(request):
     if request.method == "POST":
         email = request.POST['email'] 
         password = request.POST['password'] 
-        print(email,password)
 
         user = authenticate(email=email, password=password)
         if user is not None:
@@ -39,11 +39,9 @@ def login_view(request):
             print("Logged in")
             return redirect("home")
         else:
-            print("2")
             messages.error(request,"Invalid Credentials")
             return redirect(login_view)
     else:
-        print("3")
         return render(request,'account/login.html')
 
 def logout_view(request):

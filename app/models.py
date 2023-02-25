@@ -62,4 +62,4 @@ class Newsletter(models.Model):
 
 class Subscription(models.Model):
     creator = models.ForeignKey(User,on_delete=models.CASCADE, blank=False)
-    subscribers = models.ManyToManyField(User,related_name='subscriptions')
+    subscribers = models.ManyToManyField(User,related_name='subscriptions',default=None)
