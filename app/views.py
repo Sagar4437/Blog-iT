@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import CreateBlogForm
 from django.template.defaultfilters import slugify
 from django.contrib import messages
-from .models import Blog, Category, Comments, Newsletter
+from .models import Blog, Category, Comments, Newsletter, Subscription
 from account.models import User
 from taggit.models import Tag, TaggedItem
 from django.db.models import Count
@@ -283,9 +283,22 @@ def view_all_blogs_by_tag(request,tag):
     }
     return render(request,'app/view_all.html',context)
 
-
+def view_all_blogs_by_author(request,author,sort_method):
+    sort = ""
+    if sort_method == 'Top Blogs':
+        sort = '-views'
+    elif sort_method == 'Most Liked':
+        sort = '-likes'
+    else:
+        sort = '-created_at'
+    blogs = Blog.objects.filter(created_by__username=author).order_by(sort)
+    context = {
+        'heading':f'{author}\'s {sort_method}',
+        'blogs':blogs,
+    }
+    return render(request,'app/view_all.html',context)
 #___________________________________________________________________________________
-def subscribe(request):
+def subscribe(request): 
     if request.POST:
         email = request.POST.get('email')
         Newsletter.objects.create(email = email)
@@ -293,4 +306,42 @@ def subscribe(request):
     else:
         messages.error(request, 'Please enter valid email address')
     return redirect('home')
+    
+def author_detail(request,username):
+    user = get_object_or_404(User,username=username)
+    subscription = Subscription.objects.get(creator=user) # Get the Subscription object with creator equal to user A
+    subscribers = subscription.subscribers.all() # Get all subscribers of this Subscription
+    top_blogs = Blog.objects.filter(created_by=user).order_by('-views')
+    most_liked = Blog.objects.filter(created_by=user).order_by('-likes')
+    latest_blogs = Blog.objects.filter(created_by=user).order_by('-created_at')
+
+    if request.user.is_authenticated:
+        is_subscribed = request.user in subscribers
+    else:
+        is_subscribed = False
+
+    context={
+        'author':user,
+        'subscribers':subscribers,
+        'most_liked':most_liked,
+        'top_blogs':top_blogs,
+        'latest_blogs':latest_blogs,
+        'is_subscribed':is_subscribed,
+    }
+    return render(request,'app/author.html',context)
+
+def subscribe_creator(request,username):
+    user = get_object_or_404(User,username=username)
+    subscriptionOBJ = Subscription.objects.get(creator=user) # Get the Subscription object with creator equal to user A
+    subscribers = subscriptionOBJ.subscribers.all() # Get all subscribers of this Subscription
+    if request.user in subscribers:
+        subscriptionOBJ.subscribers.remove(request.user)
+        messages.success(request, "You have unsubscribed the Creator")
+    else:
+        if request.user.id != None:
+            subscriptionOBJ.subscribers.add(request.user)
+            messages.success(request, "You have subscribed the Creator")  
+        else:
+            messages.error(request, "Please login to subscribe to the Creator")  
+    return redirect('author_detail',username)
     

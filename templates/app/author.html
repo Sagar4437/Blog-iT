@@ -9,42 +9,59 @@
                 <div class="page-top">
                     <div class="top flex">
                         <div class="page-name">
-                            <a href="#" onclick="history.back()" class="learn"> <span class="material-icons"> keyboard_return </span> Go back </a>
-                            <h1>Category</h1>
+                            <a href="#" class="learn">
+                                <span class="material-icons"> keyboard_return </span> Go
+                                back
+                            </a>
                         </div>
                     </div>
                 </div>
 
                 <center>
-                    <div class="typo">
-                        <h1 class="title">{{category_name}}</h1>
-                        <p>
-                            Lorem ipsum began as scrambled, nonsensical Latin derived from
-                            Cicero's 1st-century BC text De Finibus Bonorum et Malorum.
-                        </p>
+                    <div class="typo mt-0">
+                        <div class="text-center mt-0">
+                            <img src="{{author.image.url}}" style="width:200px " class="rounded-circle">
+                        </div>
+                        <h1 class="title mt-3">{{author.full_name}}</h1>
+                        <div class="text-center mt-3">
+                            <div style="font-size:16px; font-weight:500; color:red;" class="mt-2 mb-2">@{{author.username}} &nbsp &nbsp 📞{{author.phone_number}}</div>
+                            <div class="px-4 mt-3">
+                                <p class="fonts" style="font-weight:500;">{{author.about}}</p>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <button class="btn btn-outline-danger p-2">{{subscribers.count}} Subscribers</button>
+
+                            <a href="{% url 'subscribe_creator' author.username %}" class="btn btn-danger p-2" style="">
+                                {% if is_subscribed %}
+                                Unsubscribe
+                                {% else %}
+                                Subscribe
+                                {% endif %}
+                            </a>
+                        </div>
                     </div>
                 </center>
-                {% if top_blogs.count > 0 %}
                 <section class="sp">
                     <div class="container">
-                        <h1 class="sec-title">Top Posts</h1>
-                        <div class="grid-2 blog">
+                        <h1 class="sec-title">Top posts</h1>
+                        <div class="grid-3 blog-grid">
                             <!-- card -->
-                            {% for blog in most_liked %}
+                            {% for blog in top_blogs %}
                             <a href="{% url 'view_blog' blog.slug %}">
                                 <div class="card">
                                     <div class="post-img">
                                         <img src="{{blog.image.url}}" alt="" />
                                     </div>
                                     <div class="card-content">
-                                        <h3>
-                                            {{blog.short_description | truncatechars:80 | title}}
+                                        <h3 class="mt-3">
+                                            {{blog.title | truncatechars:80 | title}}
                                         </h3>
-                                        <div class="author">
+                                        <div class="author mt-2">
                                             <div class="profile-pic">
                                                 <img src="{{blog.created_by.image.url}}" style="margin-top:10px" />
                                             </div>
-                                            <div class="details">
+                                            <div class="details mt-2">
                                                 <p>{{blog.created_by.username}}</p>
                                                 <small>{{blog.created_at}}</small>
                                             </div>
@@ -56,7 +73,7 @@
                             <!-- card end-->
                         </div>
                         <center>
-                            <a href="{% url 'view_all_blogs_at_category' category_name=category_name heading='top blogs' sort_method='-views' %}" class="btn btn-danger rounded mybtn mt-5" style="font-size: 12px; padding-top:10px">
+                            <a href="{% url 'view_all_blogs_by_author' author=author.username sort_method='Top Blogs' %}" class="btn btn-danger rounded mybtn mt-5" style="font-size: 12px; padding-top:10px">
                                 View all &nbsp;<i class="fa-solid fa-arrow-right" style="color:white;"></i>
                             </a>
                         </center>
@@ -65,23 +82,23 @@
                 <section class="sp">
                     <div class="container">
                         <h1 class="sec-title">Most Liked</h1>
-                        <div class="grid-2 blog">
+                        <div class="grid-3 blog-grid">
                             <!-- card -->
-                            {% for blog in most_liked %}
+                            {% for blog in top_blogs %}
                             <a href="{% url 'view_blog' blog.slug %}">
                                 <div class="card">
                                     <div class="post-img">
                                         <img src="{{blog.image.url}}" alt="" />
                                     </div>
                                     <div class="card-content">
-                                        <h3>
-                                            {{blog.short_description | truncatechars:80 | title}}
+                                        <h3 class="mt-3">
+                                            {{blog.title | truncatechars:80 | title}}
                                         </h3>
-                                        <div class="author">
+                                        <div class="author mt-2">
                                             <div class="profile-pic">
                                                 <img src="{{blog.created_by.image.url}}" style="margin-top:10px" />
                                             </div>
-                                            <div class="details">
+                                            <div class="details mt-2">
                                                 <p>{{blog.created_by.username}}</p>
                                                 <small>{{blog.created_at}}</small>
                                             </div>
@@ -93,7 +110,7 @@
                             <!-- card end-->
                         </div>
                         <center>
-                            <a href="{% url 'view_all_blogs_at_category' category_name=category_name heading='most liked blogs' sort_method='-likes' %}" class="btn btn-danger rounded mybtn mt-5" style="font-size: 12px; padding-top:10px">
+                            <a href="{% url 'view_all_blogs_by_author' author=author.username sort_method='Most Liked' %}" class="btn btn-danger rounded mybtn mt-5" style="font-size: 12px; padding-top:10px">
                                 View all &nbsp;<i class="fa-solid fa-arrow-right" style="color:white;"></i>
                             </a>
                         </center>
@@ -101,24 +118,24 @@
                 </section>
                 <section class="sp">
                     <div class="container">
-                        <h1 class="sec-title">New Posts</h1>
-                        <div class="grid-2 blog">
+                        <h1 class="sec-title">Latest Blogs</h1>
+                        <div class="grid-3 blog-grid">
                             <!-- card -->
-                            {% for blog in new_blogs %}
+                            {% for blog in top_blogs %}
                             <a href="{% url 'view_blog' blog.slug %}">
                                 <div class="card">
                                     <div class="post-img">
                                         <img src="{{blog.image.url}}" alt="" />
                                     </div>
                                     <div class="card-content">
-                                        <h3>
-                                            {{blog.short_description | truncatechars:80 | title}}
+                                        <h3 class="mt-3">
+                                            {{blog.title | truncatechars:80 | title}}
                                         </h3>
-                                        <div class="author">
+                                        <div class="author mt-2">
                                             <div class="profile-pic">
                                                 <img src="{{blog.created_by.image.url}}" style="margin-top:10px" />
                                             </div>
-                                            <div class="details">
+                                            <div class="details mt-2">
                                                 <p>{{blog.created_by.username}}</p>
                                                 <small>{{blog.created_at}}</small>
                                             </div>
@@ -130,40 +147,14 @@
                             <!-- card end-->
                         </div>
                         <center>
-                            <a href="{% url 'view_all_blogs_at_category' category_name=category_name heading='new blogs' sort_method='-created_at' %}" class="btn btn-danger rounded mybtn mt-5" style="font-size: 12px; padding-top:10px">
+                            <a href="{% url 'view_all_blogs_by_author' author=author.username sort_method='Latest Blogs' %}" class="btn btn-danger rounded mybtn mt-5" style="font-size: 12px; padding-top:10px">
                                 View all &nbsp;<i class="fa-solid fa-arrow-right" style="color:white;"></i>
                             </a>
                         </center>
                     </div>
                 </section>
-                {% else %}
-                <div class="card card-body">
-                    <span style="font-size:25px; height:200px; margin: 125px 0 0 0; font-weight:500" class="text-center">No blogs in this category</span>
-                </div>
-                {% endif %}
             </div>
             <!-- left layout end -->
-
-            <!-- right layout -->
-            <div class="right">
-                <div class="block">
-                    <h2 class="title2">Top Tags</h2>
-                    <div class="blog-tags">
-                        {% for tag in blog_top_tags %}
-                            <a href="{% url 'view_all_blogs_by_tag' tag %}" ><div class="tag">{{tag}}</div></a>
-                        {% endfor %}
-                    </div>
-                </div>
-                <div class="block">
-                    <h2 class="title2">Other Tags</h2>
-                    <div class="blog-tags">
-                        {% for tag in other_top_tags %}
-                        <a href="{% url 'view_all_blogs_by_tag' tag %}" ><div class="tag">{{tag}}</div></a>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-            <!-- right layout end -->
         </div>
     </div>
 </main>

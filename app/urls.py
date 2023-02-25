@@ -27,9 +27,13 @@ urlpatterns = [
     path('categories/<str:category_name>/<str:heading>/<str:sort_method>/',views.view_all_blogs_at_category, name="view_all_blogs_at_category"),
     path('blog/view-all-<str:heading>/<str:sort_method>/',views.view_all_blogs, name="view_all_blogs"),
     path('blog/view-all/<str:tag>',views.view_all_blogs_by_tag, name="view_all_blogs_by_tag"),
+    path('author/<str:author>/<str:sort_method>/',views.view_all_blogs_by_author, name="view_all_blogs_by_author"),
 
 
-    path('subscribe/',views.subscribe, name="subscribe"),
+    path('subscribe/',views.subscribe, name="subscribe"), #newsletter subscription
+    path('subscribe_creator/<str:username>/',views.subscribe_creator, name="subscribe_creator"), #newsletter subscription
+    path('author_detail/<str:username>',views.author_detail, name="author_detail"), #newsletter subscription
+
 
 
 

@@ -41,7 +41,7 @@
                         <div class="timeline mt-0">
                             <div class="track">
                                 <p class="time"><i class="fa-solid fa-feather mr-3 mt-2" style="font-size:25px;"></i>Published By: 
-                                    <a href="" style="font-size:18px">
+                                    <a href="{% url 'author_detail' blog.created_by.username %}" style="font-size:18px">
                                         @{{blog.created_by.username | lower}}
                                         {% if request.user.is_creator %} <img src="{% static 'images/check.png' %}" style="width:20px;">{% endif %}
                                     </a> 
