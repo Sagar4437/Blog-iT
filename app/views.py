@@ -8,6 +8,7 @@ from taggit.models import Tag, TaggedItem
 from django.db.models import Count
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
+from .utils import my_paginator
 
 # Create your views here.
 def home(request):
@@ -206,7 +207,7 @@ def view_blog(request,slug):
         'top_tags':top_tags,
         'is_bookmarked':is_bookmarked,
         'is_liked':is_liked,
-        'comments':comments
+        'comments':comments,
     }
     return render(request, 'app/blogdetails.html',context)
 
@@ -232,12 +233,15 @@ def all_blogs(request):
             blog = blog.filter(created_by__username__icontains=author)
         if category != 'all':
             blog = blog.filter(category__name=category)
-        
-
+    
+    paginator = my_paginator(request,blog,6)
+    blogs = paginator.get('page_obj')
+    
     context = {
-        'blogs':blog[:6],
+        'blogs':blogs,
         'category':categories,
     }
+    context.update(paginator.get('context'))
 
     return render(request,'app/allblogs.html',context)
 
@@ -261,26 +265,35 @@ def category_details(request,category_name):
 
 def view_all_blogs(request,heading,sort_method):
     blogs = Blog.objects.all().order_by(sort_method)
+    paginator = my_paginator(request,blogs,6)
+    blogs = paginator.get('page_obj')
     context = {
         'heading':heading,
         'blogs':blogs,
     }
+    context.update(paginator.get('context'))
     return render(request,'app/view_all.html',context)
 
 def view_all_blogs_at_category(request,category_name,heading,sort_method):
     blogs = Blog.objects.filter(category__name=category_name).order_by(sort_method)
+    paginator = my_paginator(request,blogs,6)
+    blogs = paginator.get('page_obj')
     context = {
         'heading':heading+' in '+category_name,
         'blogs':blogs,
     }
+    context.update(paginator.get('context'))
     return render(request,'app/view_all.html',context)
 
 def view_all_blogs_by_tag(request,tag):
     blogs = Blog.objects.filter(tags__name=tag)
+    paginator = my_paginator(request,blogs,6)
+    blogs = paginator.get('page_obj')
     context = {
         'heading':'Blogs related to #'+tag,
         'blogs':blogs,
     }
+    context.update(paginator.get('context'))
     return render(request,'app/view_all.html',context)
 
 def view_all_blogs_by_author(request,author,sort_method):
@@ -292,10 +305,13 @@ def view_all_blogs_by_author(request,author,sort_method):
     else:
         sort = '-created_at'
     blogs = Blog.objects.filter(created_by__username=author).order_by(sort)
+    paginator = my_paginator(request,blogs,6)
+    blogs = paginator.get('page_obj')
     context = {
         'heading':f'{author}\'s {sort_method}',
         'blogs':blogs,
     }
+    context.update(paginator.get('context'))
     return render(request,'app/view_all.html',context)
 #___________________________________________________________________________________
 def subscribe(request): 

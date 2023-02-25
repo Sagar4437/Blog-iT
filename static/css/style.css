@@ -156,7 +156,8 @@ header .container {
   background: white;
   box-shadow: 0 15px 20px #00000018;
   cursor: pointer;
-  margin-top: 20px;;
+  margin-top: 20px;
+  ;
   z-index: 2;
 }
 
@@ -1198,7 +1199,7 @@ a {
   font-size: 12px;
 }
 
-#categoryDropdown{
+#categoryDropdown {
   font-size: 16px !important;
   font-weight: 500;
   background-color: white;
@@ -1217,6 +1218,28 @@ a {
   border-radius: 5px;
 }
 
-.filled{
+.filled {
   color: red;
+}
+
+#paginator {
+  padding-top: 30px;
+}
+
+#paginator a {
+  color: black;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 22px;
+}
+
+#paginator li {
+  border: solid var(--red);
+  border-width: 1px 0;
+}
+
+.page-item.active .page-link {
+  background-color: #ff4b64 !important;
+  border-color: var(--red) !important;
+  color: #F5F5F5 !important;
 }
