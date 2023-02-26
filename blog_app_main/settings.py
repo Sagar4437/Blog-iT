@@ -149,3 +149,46 @@ CKEDITOR_CONFIGS = {
 }
 
 TAGGIT_CASE_INSENSITIVE = True
+
+
+# ______________________________________________________________________________________
+import logging
+import os
+from datetime import datetime
+
+if not os.path.exists(os.path.join(BASE_DIR, 'logs')):
+    os.mkdir(os.path.join(BASE_DIR, 'logs'))
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+    'formatters': {
+        'main_formatter':{
+            'format': '{asctime} - {levelname} - {filename}(Line-{lineno}) - {message}',
+            'style': '{',
+        }
+    },
+    'handlers': {
+        'console':{
+            'class': 'logging.StreamHandler',
+            'level': 'INFO',
+            'formatter':'main_formatter',
+        },
+        'file':{
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': f"logs/main_log_files.log",
+            'formatter':'main_formatter',
+            'level': 'DEBUG',
+            'maxBytes': 1024*1024*5,  # 5MB
+            'backupCount': 2,  # keep up to 2 backup files
+        },
+    },
+    'loggers': {
+        'main':{
+            'handlers': ['file'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+    },
+}
+# ______________________________________________________________________________________
